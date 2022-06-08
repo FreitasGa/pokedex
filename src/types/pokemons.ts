@@ -1,11 +1,11 @@
 interface PokemonMove {
-  id?: number;
+  id: number;
   name: string;
   description?: string;
 }
 
 interface PokemonTypes {
-  id?: number;
+  id: number;
   name: string;
   slot: number;
 }

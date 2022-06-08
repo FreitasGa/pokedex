@@ -1,4 +1,4 @@
-import { Pokemon } from '../types/pokemons';
+import { Pokemon } from '../types';
 
 export enum ActionTypes {
   GET_POKEMONS_REQUESTED = 'GET_POKEMONS_REQUESTED',

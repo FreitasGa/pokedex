@@ -1,5 +1,5 @@
-import { Action, ActionTypes } from '../actionTypes/pokemonsActionType';
-import { Pokemon } from '../types/pokemons';
+import { Action, ActionTypes } from '../actionTypes';
+import { Pokemon } from '../types';
 
 interface State {
   byId: {

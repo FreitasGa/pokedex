@@ -1,1 +1,1 @@
-export * from './pokemonsSelector';
+export * from './pokemonsSelectors';

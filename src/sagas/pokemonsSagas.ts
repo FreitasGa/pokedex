@@ -5,12 +5,11 @@ import {
   Action,
   ActionTypes,
   GetPokemonsRequestedAction,
-} from '../actionTypes/pokemonsActionType';
-import { ListPokemonsResponse, GetPokemonResponse } from '../types/apiResponse';
-import { Pokemon } from '../types/pokemons';
+} from '../actionTypes';
+import { GetPokemonsResponse, GetPokemonResponse, Pokemon } from '../types';
 
 const fetchPokemons = async (offset: number): Promise<Pokemon[]> => {
-  const { data: listResponse } = await instance.get<ListPokemonsResponse>(
+  const { data: listResponse } = await instance.get<GetPokemonsResponse>(
     `pokemon?offset=${offset}&limit=20}`
   );
 
