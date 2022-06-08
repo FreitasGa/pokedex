@@ -8,7 +8,7 @@ import { store, theme } from './config';
 import './index.css';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 
 root.render(
@@ -18,5 +18,5 @@ root.render(
         <App />
       </MantineProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

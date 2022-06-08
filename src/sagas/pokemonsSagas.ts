@@ -10,7 +10,7 @@ import { GetPokemonsResponse, GetPokemonResponse, Pokemon } from '../types';
 
 const fetchPokemons = async (offset: number): Promise<Pokemon[]> => {
   const { data: listResponse } = await instance.get<GetPokemonsResponse>(
-    `pokemon?offset=${offset}&limit=20}`
+    `pokemon?offset=${offset}&limit=20}`,
   );
 
   const getResponseArray = listResponse.results.map(async ({ url }) => {
@@ -53,7 +53,6 @@ function* runGetPokemons(action: GetPokemonsRequestedAction) {
       },
     });
   } catch (error) {
-    console.error(error);
     yield put<Action>({
       type: ActionTypes.GET_POKEMONS_FAILED,
       payload: {

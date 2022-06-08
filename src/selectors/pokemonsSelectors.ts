@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { RootState } from "../reducers";
+import { RootState } from '../reducers';
 
 export const getPokemonsObject = (state: RootState) => state.pokemons.byId;
 export const getPokemonsIds = (state: RootState) => state.pokemons.allIds;
@@ -10,5 +10,5 @@ export const getPokemonById = (state: RootState, id: number) => state.pokemons.b
 
 export const getPokemonsArray = createSelector(
   getPokemonsObject,
-  (pokemonsObject) => Object.values(pokemonsObject)
-)
+  (pokemonsObject) => Object.values(pokemonsObject),
+);
