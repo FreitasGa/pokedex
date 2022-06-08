@@ -1,3 +1,5 @@
+/* eslint-disable default-param-last */
+/* eslint-disable no-param-reassign */
 import { Action, ActionTypes } from '../actionTypes';
 import { Pokemon } from '../types';
 
@@ -24,7 +26,7 @@ const addNewPokemons = (state: State, newPokemons: Pokemon[]) => {
 
 export const pokemonsReducer = (
   state = initialState,
-  action: Action
+  action: Action,
 ): State => {
   switch (action.type) {
     case ActionTypes.GET_POKEMONS_REQUESTED:
