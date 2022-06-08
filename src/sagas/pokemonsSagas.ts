@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { instance } from '../config/axios';
+import { instance } from '../config';
 import {
   Action,
   ActionTypes,
