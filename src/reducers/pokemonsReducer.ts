@@ -3,7 +3,7 @@ import { Pokemon } from '../types';
 
 interface State {
   byId: {
-    [key: string]: Pokemon;
+    [key: number]: Pokemon;
   };
   allIds: number[];
   loading: boolean;
@@ -16,10 +16,10 @@ const initialState: State = {
 };
 
 const addNewPokemons = (state: State, newPokemons: Pokemon[]) => {
-  state.allIds = [...state.allIds, ...newPokemons.map((pokemon) => pokemon.id)];
   newPokemons.forEach((pokemon) => {
     state.byId[pokemon.id] = pokemon;
   });
+  state.allIds = Object.keys(state.byId).map((key) => parseInt(key, 10));
 };
 
 export const pokemonsReducer = (
