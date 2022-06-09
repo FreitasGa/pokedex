@@ -1,3 +1,6 @@
+import { TypeName } from './pokemons';
+
+/* eslint-disable camelcase */
 export interface GetPokemonsResponse {
   count: number;
   next: string;
@@ -22,7 +25,7 @@ export interface GetPokemonResponse {
   types: {
     slot: number;
     type: {
-      name: string;
+      name: TypeName;
       url: string;
     };
   }[];

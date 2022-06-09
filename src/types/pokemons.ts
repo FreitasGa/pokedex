@@ -1,3 +1,23 @@
+export type TypeName =
+  | 'bug'
+  | 'dragon'
+  | 'electric'
+  | 'fairy'
+  | 'fighting'
+  | 'fire'
+  | 'flying'
+  | 'grass'
+  | 'ground'
+  | 'ice'
+  | 'normal'
+  | 'poison'
+  | 'psychic'
+  | 'rock'
+  | 'steel'
+  | 'water'
+  | 'ghost'
+  | 'dark';
+
 interface PokemonMove {
   id: number;
   name: string;
@@ -6,7 +26,7 @@ interface PokemonMove {
 
 interface PokemonTypes {
   id: number;
-  name: string;
+  name: TypeName;
   slot: number;
 }
 
