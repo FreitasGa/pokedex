@@ -1,15 +1,20 @@
 import { createStyles } from '@mantine/core';
 
-export const usePokemonPreviewStyles = createStyles((theme) => ({
+export const usePokemonCardStyles = createStyles((theme) => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
     width: 'fit-content',
+    cursor: 'pointer',
+  },
+  upperWrapper: {
+    position: 'relative',
   },
   imageWrapper: {
     position: 'relative',
     borderTopLeftRadius: theme.radius.md,
     borderTopRightRadius: theme.radius.md,
+    overflow: 'hidden',
   },
   imageBackground: {
     position: 'absolute',
@@ -36,6 +41,7 @@ export const usePokemonPreviewStyles = createStyles((theme) => ({
     borderRadius: '100%',
     bottom: '-22px',
     right: 'calc(50% - 22px)',
+    zIndex: 2,
   },
   actionIcon: {
     transition: 'all 0.2s ease-in-out',

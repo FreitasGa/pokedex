@@ -19,7 +19,7 @@ import {
   colorByType,
   formatId,
 } from './utils';
-import { usePokemonPreviewStyles } from '../styles/components';
+import { usePokemonCardStyles } from '../styles/components';
 import pokeballBackground from '../assets/pokeballBackground.png';
 
 interface PokemonPreviewProps {
@@ -27,10 +27,10 @@ interface PokemonPreviewProps {
   selected: boolean;
 }
 
-export const PokemonPreview = (props: PokemonPreviewProps) => {
+export const PokemonCard = (props: PokemonPreviewProps) => {
   const { pokemon, selected } = props;
 
-  const { classes } = usePokemonPreviewStyles();
+  const { classes } = usePokemonCardStyles();
 
   const [isPokemonSelected, setIsPokemonSelected] = useBooleanToggle(selected);
 
@@ -38,25 +38,42 @@ export const PokemonPreview = (props: PokemonPreviewProps) => {
   const sortedTypes = [...pokemon.types].sort((a, b) => a.slot - b.slot);
   const formattedId = formatId(pokemon.id);
 
+  const handleCardClick = () => {
+    console.log('clicked');
+  };
+
+  const handleIconClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    setIsPokemonSelected();
+  };
+
   return (
-    <Paper className={classes.wrapper} radius="md" shadow="md" withBorder>
-      <Box
-        className={classes.imageWrapper}
-        sx={{ backgroundColor: backgroundColorByType(sortedTypes[0].name) }}
-      >
-        <Image className={classes.imageBackground} src={pokeballBackground} />
-        <Image
-          className={classes.image}
-          src={pokemon.image}
-          alt={pokemon.name}
-          width={200}
-          height={200}
-        />
+    <Paper
+      className={classes.wrapper}
+      radius="md"
+      shadow="md"
+      withBorder
+      onClick={handleCardClick}
+    >
+      <Box className={classes.upperWrapper}>
+        <Box
+          className={classes.imageWrapper}
+          sx={{ backgroundColor: backgroundColorByType(sortedTypes[0].name) }}
+        >
+          <Image className={classes.imageBackground} src={pokeballBackground} />
+          <Image
+            className={classes.image}
+            src={pokemon.image}
+            alt={pokemon.name}
+            width={200}
+            height={200}
+          />
+        </Box>
         <Box className={classes.actionWrapper}>
           <ActionIcon
             variant="transparent"
             size={36}
-            onClick={() => setIsPokemonSelected()}
+            onClick={handleIconClick}
           >
             <Pokeball
               className={classes.actionIcon}
