@@ -42,7 +42,9 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
     console.log('clicked');
   };
 
-  const handleIconClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleIconClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     event.stopPropagation();
     setIsPokemonSelected();
   };
@@ -70,11 +72,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
           />
         </Box>
         <Box className={classes.actionWrapper}>
-          <ActionIcon
-            variant="transparent"
-            size={36}
-            onClick={handleIconClick}
-          >
+          <ActionIcon variant="transparent" size={36} onClick={handleIconClick}>
             <Pokeball
               className={classes.actionIcon}
               size={36}

@@ -45,7 +45,7 @@ export const Header = () => {
 
   return (
     <HeaderWrapper className={classes.wrapper} height={60}>
-      <Container className={classes.header}>
+      <Container className={classes.header} size="xl">
         <Title order={2}>Pokédex</Title>
         <Group className={classes.links} spacing={5}>
           {items}
