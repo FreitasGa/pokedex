@@ -4,10 +4,31 @@ export const usePokemonModalStyles = createStyles((theme) => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'row',
-    maxHeight: '572px',
-    gap: '0.5rem',
+    maxHeight: '33.5rem',
+    maxWidth: '60rem',
+    transition: 'all 0.25s',
+    position: 'relative',
+
+    [theme.fn.smallerThan('lg')]: {
+      maxWidth: '54rem',
+    },
+
+    [theme.fn.smallerThan('md')]: {
+      maxWidth: '48rem',
+    },
+
+    [theme.fn.smallerThan('sm')]: {
+      flexDirection: 'column',
+      maxHeight: 'none',
+    },
   },
-  sideWrapper: {
+  closeButton: {
+    position: 'absolute',
+    top: '0.5rem',
+    right: '0.5rem',
+    zIndex: 5,
+  },
+  leftSideWrapper: {
     display: 'flex',
     flexDirection: 'column',
   },
@@ -18,6 +39,10 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     position: 'relative',
     overflow: 'hidden',
     borderTopLeftRadius: theme.radius.md,
+
+    [theme.fn.smallerThan('sm')]: {
+      borderTopLeftRadius: 0,
+    },
   },
   imageBackground: {
     position: 'absolute',
@@ -43,7 +68,7 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     padding: '0.25rem 0.25rem',
     borderRadius: '100%',
     bottom: '-22px',
-    right: 'calc(50% - 22px)',
+    right: 'calc(10% - 22px)',
     zIndex: 2,
   },
   actionIcon: {
@@ -62,8 +87,14 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     color: '#A0A0A0',
     fontWeight: 600,
   },
+  rightSideWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: theme.spacing.md,
+  },
   pokemonName: {
     fontWeight: 500,
+    marginBottom: '0.25rem',
   },
   movesGroup: {
     flexDirection: 'column',

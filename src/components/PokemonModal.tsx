@@ -3,8 +3,11 @@ import {
   ActionIcon,
   Badge,
   Box,
+  CloseButton,
+  Divider,
   Group,
   Image,
+  ScrollArea,
   Stack,
   Text,
   Title,
@@ -27,27 +30,28 @@ import { getPokemonById } from '../selectors';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
 
 type PokemonModalProps = {
-  id: number;
+  pokemonId: number;
   selected: boolean;
 };
 
 export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   const {
-    innerProps: { id, selected },
+    id,
+    context: { closeModal },
+    innerProps: { pokemonId, selected },
   } = props;
 
   const dispatch = useTypedDispatch();
   const { classes } = usePokemonModalStyles();
 
-  const pokemon = useTypedSelector((state) => getPokemonById(state, id));
+  const pokemon = useTypedSelector((state) => getPokemonById(state, pokemonId));
   const [isSelected, toggleIsSelected] = useBooleanToggle(selected);
 
   const capitalizedName = capitalize(pokemon.name);
   const formattedId = formatId(pokemon.id);
 
-  const handleIconClick = () => {
-    toggleIsSelected();
-  };
+  const handleIconClick = () => toggleIsSelected();
+  const handleCloseClick = () => closeModal(id);
 
   useEffect(() => {
     dispatch<GetPokemonMoveRequestedAction>({
@@ -58,7 +62,13 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
 
   return (
     <Box className={classes.wrapper}>
-      <Box className={classes.sideWrapper}>
+      <CloseButton
+        className={classes.closeButton}
+        onClick={handleCloseClick}
+        aria-label="Close modal"
+        size="xl"
+      />
+      <Box className={classes.leftSideWrapper}>
         <Box className={classes.upperWrapper}>
           <Box
             className={classes.imageWrapper}
@@ -74,19 +84,19 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
               className={classes.image}
               src={pokemon.image}
               alt={pokemon.name}
-              width={420}
-              height={420}
+              width={380}
+              height={380}
             />
           </Box>
           <Box className={classes.actionWrapper}>
             <ActionIcon
               onClick={handleIconClick}
-              size={36}
+              size={42}
               variant="transparent"
             >
               <Pokeball
                 className={classes.actionIcon}
-                size={36}
+                size={42}
                 color={isSelected ? '#fff' : '#A0A0A0'}
                 fill={isSelected ? '#A0A0A0' : 'transparent'}
               />
@@ -114,15 +124,26 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
           </Group>
         </Box>
       </Box>
-      <Box className={classes.sideWrapper}>
-        <Title className={classes.pokemonName} order={2}>
+      <Box className={classes.rightSideWrapper}>
+        <Title className={classes.pokemonName} order={3}>
           Ataques
         </Title>
-        <Stack className={classes.movesGroup} spacing={4}>
-          {pokemon.moves?.map((move) => (
-            <Move key={move.id} move={move} />
-          ))}
-        </Stack>
+        <ScrollArea
+          scrollbarSize={6}
+          type="scroll"
+          offsetScrollbars
+        >
+          <Stack className={classes.movesGroup} spacing={4}>
+            {pokemon.moves?.map((move, index) => (
+              <>
+                <Move key={move.id} move={move} />
+                {(pokemon.moves && index !== pokemon.moves.length - 1) && (
+                  <Divider />
+                )}
+              </>
+            ))}
+          </Stack>
+        </ScrollArea>
       </Box>
     </Box>
   );
