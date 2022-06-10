@@ -47,7 +47,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
       size: 'fit-content',
       radius: 'md',
       innerProps: {
-        pokemon,
+        id: pokemon.id,
         selected: isSelected,
       },
     });

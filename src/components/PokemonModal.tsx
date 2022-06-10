@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   ActionIcon,
   Badge,
   Box,
   Group,
   Image,
+  Stack,
   Text,
   Title,
 } from '@mantine/core';
@@ -13,7 +13,6 @@ import { ContextModalProps } from '@mantine/modals';
 import { useBooleanToggle } from '@mantine/hooks';
 import { Pokeball } from 'tabler-icons-react';
 
-import { Pokemon } from '../types';
 import { usePokemonModalStyles } from '../styles/components';
 import { ActionTypes, GetPokemonMoveRequestedAction } from '../actionTypes';
 import {
@@ -24,20 +23,23 @@ import {
 } from './utils';
 import pokeballBackground from '../assets/pokeballBackground.png';
 import { Move } from './Move';
+import { getPokemonById } from '../selectors';
+import { useTypedDispatch, useTypedSelector } from '../hooks';
 
 type PokemonModalProps = {
-  pokemon: Pokemon;
+  id: number;
   selected: boolean;
 };
 
 export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   const {
-    innerProps: { pokemon, selected },
+    innerProps: { id, selected },
   } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
   const { classes } = usePokemonModalStyles();
 
+  const pokemon = useTypedSelector((state) => getPokemonById(state, id));
   const [isSelected, toggleIsSelected] = useBooleanToggle(selected);
 
   const capitalizedName = capitalize(pokemon.name);
@@ -99,14 +101,14 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
             {capitalizedName}
           </Title>
           <Group spacing={4}>
-            {pokemon.types.map(({ id, name }) => (
+            {pokemon.types.map((type) => (
               <Badge
-                key={id}
+                key={type.id}
                 variant="filled"
                 radius="sm"
-                sx={{ backgroundColor: colorByType(name) }}
+                sx={{ backgroundColor: colorByType(type.name) }}
               >
-                {name}
+                {type.name}
               </Badge>
             ))}
           </Group>
@@ -116,11 +118,11 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
         <Title className={classes.pokemonName} order={2}>
           Ataques
         </Title>
-        <Group spacing={4} direction="column">
+        <Stack className={classes.movesGroup} spacing={4}>
           {pokemon.moves?.map((move) => (
             <Move key={move.id} move={move} />
           ))}
-        </Group>
+        </Stack>
       </Box>
     </Box>
   );

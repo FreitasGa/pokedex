@@ -1,8 +1,9 @@
 import React from 'react';
-import { Badge, Box, Text } from '@mantine/core';
+import { Box, Paper, Text } from '@mantine/core';
 
 import { PokemonMove } from '../types';
-import { capitalize, colorByType } from './utils';
+import { backgroundColorByType, capitalize } from './utils';
+import { useMoveStyles } from '../styles/components';
 
 interface MoveProps {
   move: PokemonMove;
@@ -11,23 +12,29 @@ interface MoveProps {
 export const Move = (props: MoveProps) => {
   const { move } = props;
 
+  const { classes } = useMoveStyles();
+
   const capitalizedMoveName = capitalize(move.name);
 
   return (
-    <Box>
-      <Text>
-        {capitalizedMoveName}
-      </Text>
-      <Badge
-        variant="filled"
-        radius="sm"
-        sx={{ backgroundColor: colorByType(move.type) }}
-      >
-        {move.type}
-      </Badge>
-      <Text>
-        {move.description}
-      </Text>
-    </Box>
+    <Paper
+      className={classes.wrapper}
+      p={0}
+      radius="md"
+      withBorder
+    >
+      <Box
+        className={classes.bar}
+        sx={{ backgroundColor: backgroundColorByType(move.type) }}
+      />
+      <Box className={classes.infoWrapper}>
+        <Text className={classes.moveName}>
+          {capitalizedMoveName}
+        </Text>
+        <Text>
+          {move.description}
+        </Text>
+      </Box>
+    </Paper>
   );
 };

@@ -4,6 +4,8 @@ export const usePokemonModalStyles = createStyles((theme) => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'row',
+    maxHeight: '572px',
+    gap: '0.5rem',
   },
   sideWrapper: {
     display: 'flex',
@@ -16,7 +18,6 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     position: 'relative',
     overflow: 'hidden',
     borderTopLeftRadius: theme.radius.md,
-    borderTopRightRadius: theme.radius.md,
   },
   imageBackground: {
     position: 'absolute',
@@ -63,5 +64,9 @@ export const usePokemonModalStyles = createStyles((theme) => ({
   },
   pokemonName: {
     fontWeight: 500,
+  },
+  movesGroup: {
+    flexDirection: 'column',
+    overflowY: 'auto',
   },
 }));
