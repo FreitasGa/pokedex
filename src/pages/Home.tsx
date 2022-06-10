@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Center,
@@ -22,16 +21,17 @@ import { ActionTypes, GetPokemonsRequestedAction } from '../actionTypes';
 import { withHeader } from '../hocs';
 import { PokemonCard } from '../components';
 import { useHomeStyles } from '../styles/pages';
+import { useTypedDispatch, useTypedSelector } from '../hooks';
 
 const Home = () => {
   const theme = useMantineTheme();
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
 
   const { classes } = useHomeStyles();
 
-  const pokemonsArray = useSelector(getPokemonsArray);
-  const pokemonsLength = useSelector(getPokemonsLength);
-  const pokemonsLoading = useSelector(getPokemonsLoading);
+  const pokemonsArray = useTypedSelector(getPokemonsArray);
+  const pokemonsLength = useTypedSelector(getPokemonsLength);
+  const pokemonsLoading = useTypedSelector(getPokemonsLoading);
 
   const [searchValue, setSearchValue] = useInputState('');
 

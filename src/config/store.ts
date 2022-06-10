@@ -22,3 +22,4 @@ const configureStore = () => {
 };
 
 export const store = configureStore();
+export type ActionDispatch = typeof store.dispatch;
