@@ -5,6 +5,10 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
   },
+  sideWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   upperWrapper: {
     position: 'relative',
   },
@@ -29,5 +33,35 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     justifyContent: 'center',
     padding: '1rem 0.5rem',
     zIndex: 1,
+  },
+  actionWrapper: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    width: 'fit-content',
+    height: 'fit-content',
+    padding: '0.25rem 0.25rem',
+    borderRadius: '100%',
+    bottom: '-22px',
+    right: 'calc(50% - 22px)',
+    zIndex: 2,
+  },
+  actionIcon: {
+    transition: 'all 0.2s ease-in-out',
+    '&:hover': {
+      transform: 'rotate(-15deg)',
+    },
+  },
+  infoWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.25rem',
+    padding: theme.spacing.md,
+  },
+  pokemonId: {
+    color: '#A0A0A0',
+    fontWeight: 600,
+  },
+  pokemonName: {
+    fontWeight: 500,
   },
 }));

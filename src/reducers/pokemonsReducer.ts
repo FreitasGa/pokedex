@@ -23,8 +23,8 @@ const addNewPokemons = (state: State, newPokemons: GetPokemonResponse[]) => {
     const pokemon = {
       id: newPokemon.id,
       name: newPokemon.name,
-      height: newPokemon.height,
-      weight: newPokemon.weight,
+      height: newPokemon.height / 10, // dm to m
+      weight: newPokemon.weight / 10, // hg to kg
       types: newPokemon.types
         .sort((a, b) => a.slot - b.slot)
         .map(({ type }) => ({
@@ -40,13 +40,19 @@ const addNewPokemons = (state: State, newPokemons: GetPokemonResponse[]) => {
 };
 
 const addNewMoves = (state: State, newMoves: GetMoveResponse[], id: number) => {
-  state.byId[id].moves = newMoves.map((move) => ({
-    id: move.id,
-    name: move.name,
-    description: move.effect_entries[0].short_effect,
-    damageClass: move.damage_class.name,
-    type: move.type.name,
-  }));
+  state.byId[id].moves = newMoves.map((move) => {
+    const description = move.effect_entries[0]?.short_effect.replaceAll(
+      '$effect_chance%',
+      `${move.effect_chance}%`,
+    );
+    return {
+      id: move.id,
+      name: move.name,
+      description,
+      damageClass: move.damage_class.name,
+      type: move.type.name,
+    };
+  });
 };
 
 export const pokemonsReducer = produce(

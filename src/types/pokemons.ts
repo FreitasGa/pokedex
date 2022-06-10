@@ -18,7 +18,7 @@ export type TypeName =
   | 'ghost'
   | 'dark';
 
-interface PokemonMove {
+export interface PokemonMove {
   id: number;
   name: string;
   description: string;
@@ -26,7 +26,7 @@ interface PokemonMove {
   type: TypeName;
 }
 
-interface PokemonTypes {
+export interface PokemonTypes {
   id: number;
   name: TypeName;
 }

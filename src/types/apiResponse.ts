@@ -41,6 +41,7 @@ export interface GetPokemonResponse {
 export interface GetMoveResponse {
   id: number;
   name: string;
+  effect_chance: number;
   effect_entries: {
     short_effect: string;
   }[];
