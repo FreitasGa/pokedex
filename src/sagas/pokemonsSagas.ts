@@ -4,9 +4,15 @@ import { instance } from '../config';
 import {
   Action,
   ActionTypes,
+  GetPokemonRequestedAction,
   GetPokemonsRequestedAction,
 } from '../actionTypes';
-import { GetPokemonsResponse, GetPokemonResponse, Pokemon } from '../types';
+import {
+  GetPokemonsResponse,
+  GetPokemonResponse,
+  Pokemon,
+  GetMoveResponse,
+} from '../types';
 
 const fetchPokemons = async (offset: number): Promise<Pokemon[]> => {
   const { data: listResponse } = await instance.get<GetPokemonsResponse>(
@@ -25,10 +31,6 @@ const fetchPokemons = async (offset: number): Promise<Pokemon[]> => {
     name: pokemon.name,
     height: pokemon.height,
     weight: pokemon.weight,
-    moves: pokemon.moves.map(({ move }) => ({
-      id: Number(move.url.split('/')[6]),
-      name: move.name,
-    })),
     types: pokemon.types.map(({ slot, type }) => ({
       slot,
       id: Number(type.url.split('/')[6]),
@@ -36,6 +38,39 @@ const fetchPokemons = async (offset: number): Promise<Pokemon[]> => {
     })),
     image: pokemon.sprites.other['official-artwork'].front_default,
   }));
+};
+
+const fetchPokemon = async (id: number): Promise<Pokemon> => {
+  const { data: getResponse } = await instance.get<GetPokemonResponse>(
+    `pokemon/${id}`,
+  );
+
+  const getMoveArray = getResponse.moves.map(async ({ move: { url } }) => {
+    const { data: getMove } = await instance.get<GetMoveResponse>(url);
+    return getMove;
+  });
+
+  const moves = await Promise.all(getMoveArray);
+
+  return {
+    id: getResponse.id,
+    name: getResponse.name,
+    height: getResponse.height,
+    weight: getResponse.weight,
+    types: getResponse.types.map(({ slot, type }) => ({
+      slot,
+      id: Number(type.url.split('/')[6]),
+      name: type.name,
+    })),
+    image: getResponse.sprites.other['official-artwork'].front_default,
+    moves: moves.map((move) => ({
+      id: move.id,
+      name: move.name,
+      description: move.effect_entries[0].short_effect,
+      damageClass: move.damage_class.name,
+      type: move.type.name,
+    })),
+  };
 };
 
 function* runGetPokemons(action: GetPokemonsRequestedAction) {
@@ -64,4 +99,32 @@ function* runGetPokemons(action: GetPokemonsRequestedAction) {
 
 export function* getPokemons() {
   yield takeEvery(ActionTypes.GET_POKEMONS_REQUESTED, runGetPokemons);
+}
+
+function* runGetPokemon(action: GetPokemonRequestedAction) {
+  const {
+    payload: { id },
+  } = action;
+
+  try {
+    const pokemon: Pokemon = yield call(fetchPokemon, id);
+
+    yield put<Action>({
+      type: ActionTypes.GET_POKEMON_SUCCEEDED,
+      payload: {
+        pokemon,
+      },
+    });
+  } catch (error) {
+    yield put<Action>({
+      type: ActionTypes.GET_POKEMON_FAILED,
+      payload: {
+        error,
+      },
+    });
+  }
+}
+
+export function* getPokemon() {
+  yield takeEvery(ActionTypes.GET_POKEMON_REQUESTED, runGetPokemon);
 }

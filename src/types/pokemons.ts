@@ -21,7 +21,9 @@ export type TypeName =
 interface PokemonMove {
   id: number;
   name: string;
-  description?: string;
+  description: string;
+  damageClass: string;
+  type: TypeName;
 }
 
 interface PokemonTypes {
@@ -35,7 +37,7 @@ export interface Pokemon {
   name: string;
   height: number;
   weight: number;
-  moves: PokemonMove[];
   types: PokemonTypes[];
   image: string;
+  moves?: PokemonMove[];
 }

@@ -1,6 +1,6 @@
+/* eslint-disable camelcase */
 import { TypeName } from './pokemons';
 
-/* eslint-disable camelcase */
 export interface GetPokemonsResponse {
   count: number;
   next: string;
@@ -44,4 +44,10 @@ export interface GetMoveResponse {
   effect_entries: {
     short_effect: string;
   }[];
+  damage_class: {
+    name: string;
+  };
+  type: {
+    name: TypeName;
+  };
 }
