@@ -4,7 +4,6 @@ export const usePokemonCardStyles = createStyles((theme) => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    // width: 'fit-content',
     cursor: 'pointer',
   },
   upperWrapper: {
@@ -19,7 +18,7 @@ export const usePokemonCardStyles = createStyles((theme) => ({
   imageBackground: {
     position: 'absolute',
     opacity: 0.7,
-    aspectRatio: '1:1',
+    aspectRatio: '1/1',
     width: '60%',
     top: '8%',
     right: '-30%',

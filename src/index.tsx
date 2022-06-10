@@ -1,10 +1,11 @@
-import { MantineProvider } from '@mantine/core';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 
 import { App } from './App';
-import { store, theme } from './config';
+import { modals, store, theme } from './config';
 import './index.css';
 
 const root = ReactDOM.createRoot(
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <MantineProvider theme={theme}>
-        <App />
+        <ModalsProvider modals={modals}>
+          <App />
+        </ModalsProvider>
       </MantineProvider>
     </Provider>
   </React.StrictMode>,

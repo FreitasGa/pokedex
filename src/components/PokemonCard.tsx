@@ -9,8 +9,9 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { Pokeball } from 'tabler-icons-react';
 import { useBooleanToggle } from '@mantine/hooks';
+import { useModals } from '@mantine/modals';
+import { Pokeball } from 'tabler-icons-react';
 
 import { Pokemon } from '../types';
 import {
@@ -30,23 +31,32 @@ interface PokemonPreviewProps {
 export const PokemonCard = (props: PokemonPreviewProps) => {
   const { pokemon, selected } = props;
 
+  const modals = useModals();
   const { classes } = usePokemonCardStyles();
 
-  const [isPokemonSelected, setIsPokemonSelected] = useBooleanToggle(selected);
+  const [isPokemonSelected, toggleIsPokemonSelected] = useBooleanToggle(selected);
 
   const capitalizedName = capitalize(pokemon.name);
   const sortedTypes = [...pokemon.types].sort((a, b) => a.slot - b.slot);
   const formattedId = formatId(pokemon.id);
 
   const handleCardClick = () => {
-    console.log('clicked');
+    modals.openContextModal('PokemonModal', {
+      centered: true,
+      withCloseButton: false,
+      radius: 'md',
+      padding: 0,
+      innerProps: {
+        pokemon,
+      },
+    });
   };
 
   const handleIconClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    setIsPokemonSelected();
+    toggleIsPokemonSelected();
   };
 
   return (
