@@ -29,7 +29,6 @@ interface PokemonMove {
 interface PokemonTypes {
   id: number;
   name: TypeName;
-  slot: number;
 }
 
 export interface Pokemon {

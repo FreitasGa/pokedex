@@ -5,7 +5,7 @@ import { ContextModalProps } from '@mantine/modals';
 
 import { Pokemon } from '../types';
 import { usePokemonModalStyles } from '../styles/components';
-import { ActionTypes, GetPokemonRequestedAction } from '../actionTypes';
+import { ActionTypes, GetPokemonMoveRequestedAction } from '../actionTypes';
 import pokeballBackground from '../assets/pokeballBackground.png';
 
 type PokemonModalProps = {
@@ -21,8 +21,8 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   const { classes } = usePokemonModalStyles();
 
   useEffect(() => {
-    dispatch<GetPokemonRequestedAction>({
-      type: ActionTypes.GET_POKEMON_REQUESTED,
+    dispatch<GetPokemonMoveRequestedAction>({
+      type: ActionTypes.GET_POKEMON_MOVE_REQUESTED,
       payload: { id: pokemon.id },
     });
   }, []);

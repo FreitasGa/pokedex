@@ -37,7 +37,6 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
   const [isPokemonSelected, toggleIsPokemonSelected] = useBooleanToggle(selected);
 
   const capitalizedName = capitalize(pokemon.name);
-  const sortedTypes = [...pokemon.types].sort((a, b) => a.slot - b.slot);
   const formattedId = formatId(pokemon.id);
 
   const handleCardClick = () => {
@@ -70,7 +69,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
       <Box className={classes.upperWrapper}>
         <Box
           className={classes.imageWrapper}
-          sx={{ backgroundColor: backgroundColorByType(sortedTypes[0].name) }}
+          sx={{ backgroundColor: backgroundColorByType(pokemon.types[0].name) }}
         >
           <Image className={classes.imageBackground} src={pokeballBackground} />
           <Image
@@ -98,7 +97,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
           {capitalizedName}
         </Title>
         <Group spacing={4}>
-          {sortedTypes.map((type) => (
+          {pokemon.types.map((type) => (
             <Badge
               key={type.id}
               variant="filled"

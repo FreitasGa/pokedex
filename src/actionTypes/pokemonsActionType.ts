@@ -1,12 +1,12 @@
-import { Pokemon } from '../types';
+import { GetMoveResponse, GetPokemonResponse } from '../types';
 
 export enum ActionTypes {
   GET_POKEMONS_REQUESTED = 'GET_POKEMONS_REQUESTED',
   GET_POKEMONS_SUCCEEDED = 'GET_POKEMONS_SUCCEEDED',
   GET_POKEMONS_FAILED = 'GET_POKEMONS_FAILED',
-  GET_POKEMON_REQUESTED = 'GET_POKEMON_REQUESTED',
-  GET_POKEMON_SUCCEEDED = 'GET_POKEMON_SUCCEEDED',
-  GET_POKEMON_FAILED = 'GET_POKEMON_FAILED',
+  GET_POKEMON_MOVE_REQUESTED = 'GET_POKEMON_MOVE_REQUESTED',
+  GET_POKEMON_MOVE_SUCCEEDED = 'GET_POKEMON_MOVE_SUCCEEDED',
+  GET_POKEMON_MOVE_FAILED = 'GET_POKEMON_MOVE_FAILED',
 }
 
 export interface GetPokemonsRequestedAction {
@@ -19,7 +19,7 @@ export interface GetPokemonsRequestedAction {
 export interface GetPokemonsSucceededAction {
   type: ActionTypes.GET_POKEMONS_SUCCEEDED;
   payload: {
-    pokemons: Pokemon[];
+    pokemons: GetPokemonResponse[];
   };
 }
 
@@ -30,22 +30,23 @@ export interface GetPokemonsFailedAction {
   };
 }
 
-export interface GetPokemonRequestedAction {
-  type: ActionTypes.GET_POKEMON_REQUESTED;
+export interface GetPokemonMoveRequestedAction {
+  type: ActionTypes.GET_POKEMON_MOVE_REQUESTED;
   payload: {
     id: number;
   };
 }
 
-export interface GetPokemonSucceededAction {
-  type: ActionTypes.GET_POKEMON_SUCCEEDED;
+export interface GetPokemonMoveSucceededAction {
+  type: ActionTypes.GET_POKEMON_MOVE_SUCCEEDED;
   payload: {
-    pokemon: Pokemon;
+    moves: GetMoveResponse[];
+    id: number;
   };
 }
 
-export interface GetPokemonFailedAction {
-  type: ActionTypes.GET_POKEMON_FAILED;
+export interface GetPokemonMoveFailedAction {
+  type: ActionTypes.GET_POKEMON_MOVE_FAILED;
   payload: {
     error: unknown;
   };
@@ -55,6 +56,6 @@ export type Action =
   | GetPokemonsRequestedAction
   | GetPokemonsSucceededAction
   | GetPokemonsFailedAction
-  | GetPokemonRequestedAction
-  | GetPokemonSucceededAction
-  | GetPokemonFailedAction;
+  | GetPokemonMoveRequestedAction
+  | GetPokemonMoveSucceededAction
+  | GetPokemonMoveFailedAction;
