@@ -32,7 +32,7 @@ const Home = () => {
   const theme = useMantineTheme();
   const dispatch = useTypedDispatch();
 
-  const { classes } = useHomeStyles();
+  const { cx, classes } = useHomeStyles();
 
   const pokemonsArray = useTypedSelector(getPokemonsArray);
   const pokemonsLength = useTypedSelector(getPokemonsLength);
@@ -105,7 +105,13 @@ const Home = () => {
         </SimpleGrid>
         <Waypoint onEnter={() => getPokemons(pokemonsLength)}>
           <Center py="xs">
-            <Pokeball />
+            <Pokeball
+              className={cx(classes.pokeball, {
+                [classes.pokeballLoading]: pokemonsLoading,
+              })}
+              size={30}
+              color="#A0A0A0"
+            />
           </Center>
         </Waypoint>
       </Container>

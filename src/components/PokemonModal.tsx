@@ -3,6 +3,7 @@ import {
   ActionIcon,
   Badge,
   Box,
+  Center,
   CloseButton,
   Divider,
   Group,
@@ -33,6 +34,7 @@ import { Move } from './Move';
 import {
   getIsPokemonSelected,
   getMovesArrayByIds,
+  getMovesLoading,
   getPokemonById,
 } from '../selectors';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
@@ -53,6 +55,7 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
 
   const pokemon = useTypedSelector((state) => getPokemonById(state, pokemonId));
   const moves = useTypedSelector((state) => getMovesArrayByIds(state, pokemon.movesIds));
+  const movesLoading = useTypedSelector(getMovesLoading);
   const isSelected = useTypedSelector((state) => getIsPokemonSelected(state, pokemon.id));
 
   const capitalizedName = capitalize(pokemon.name);
@@ -138,7 +141,7 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
         </Box>
       </Box>
       <Box className={classes.rightSideWrapper}>
-        <Title className={classes.pokemonName} order={3}>
+        <Title className={classes.movesHeader} order={3}>
           Ataques
         </Title>
         <ScrollArea scrollbarSize={6} type="scroll" offsetScrollbars>
@@ -151,6 +154,15 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
             ))}
           </Stack>
         </ScrollArea>
+        {movesLoading && (
+          <Center py="xs">
+            <Pokeball
+              className={classes.pokeballLoading}
+              size={30}
+              color="#A0A0A0"
+            />
+          </Center>
+        )}
       </Box>
     </Box>
   );

@@ -1,4 +1,13 @@
-import { createStyles } from '@mantine/core';
+import { createStyles, keyframes } from '@mantine/core';
+
+const pokeballLoader = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+`;
 
 export const usePokemonModalStyles = createStyles((theme) => ({
   wrapper: {
@@ -19,7 +28,8 @@ export const usePokemonModalStyles = createStyles((theme) => ({
 
     [theme.fn.smallerThan('sm')]: {
       flexDirection: 'column',
-      maxHeight: 'none',
+      maxHeight: '100vh',
+      overflow: 'auto',
     },
   },
   closeButton: {
@@ -39,9 +49,11 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     position: 'relative',
     overflow: 'hidden',
     borderTopLeftRadius: theme.radius.md,
+    borderBottomRightRadius: theme.radius.md,
 
     [theme.fn.smallerThan('sm')]: {
       borderTopLeftRadius: 0,
+      borderBottomRightRadius: 0,
     },
   },
   imageBackground: {
@@ -68,7 +80,7 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     padding: '0.25rem 0.25rem',
     borderRadius: '100%',
     bottom: '-29px',
-    right: 'calc(10% - 29px)',
+    right: 'calc(12.5% - 29px)',
     zIndex: 2,
   },
   actionIcon: {
@@ -91,6 +103,11 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing.md,
+    minWidth: '20rem',
+
+    [theme.fn.smallerThan('sm')]: {
+      minWidth: 0,
+    },
   },
   pokemonName: {
     fontWeight: 500,
@@ -99,5 +116,12 @@ export const usePokemonModalStyles = createStyles((theme) => ({
   movesGroup: {
     flexDirection: 'column',
     overflowY: 'auto',
+  },
+  movesHeader: {
+    fontWeight: 500,
+    marginBottom: '0.25rem',
+  },
+  pokeballLoading: {
+    animation: `${pokeballLoader} 1s linear infinite`,
   },
 }));

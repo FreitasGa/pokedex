@@ -51,14 +51,18 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
       withCloseButton: false,
       size: 'fit-content',
       radius: 'md',
-      styles: {
+      styles: (theme) => ({
         inner: {
           padding: 0,
         },
         modal: {
           marginLeft: 0,
+
+          [theme.fn.smallerThan('sm')]: {
+            borderRadius: 0,
+          },
         },
-      },
+      }),
       innerProps: {
         pokemonId: pokemon.id,
         selected: isSelected,
