@@ -101,12 +101,12 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
         <Box className={classes.actionWrapper}>
           <ActionIcon
             onClick={handleSelectClick}
-            size={36}
+            size={38}
             variant="transparent"
           >
             <Pokeball
               className={classes.actionIcon}
-              size={36}
+              size={38}
               color={isSelected ? '#fff' : '#A0A0A0'}
               fill={isSelected ? '#A0A0A0' : 'transparent'}
             />

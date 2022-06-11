@@ -67,8 +67,8 @@ export const usePokemonModalStyles = createStyles((theme) => ({
     height: 'fit-content',
     padding: '0.25rem 0.25rem',
     borderRadius: '100%',
-    bottom: '-22px',
-    right: 'calc(10% - 22px)',
+    bottom: '-29px',
+    right: 'calc(10% - 29px)',
     zIndex: 2,
   },
   actionIcon: {

@@ -104,12 +104,12 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
           <Box className={classes.actionWrapper}>
             <ActionIcon
               onClick={handleIconClick}
-              size={42}
+              size={46}
               variant="transparent"
             >
               <Pokeball
                 className={classes.actionIcon}
-                size={42}
+                size={46}
                 color={isSelected ? '#fff' : '#A0A0A0'}
                 fill={isSelected ? '#A0A0A0' : 'transparent'}
               />

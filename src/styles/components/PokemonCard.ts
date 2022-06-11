@@ -38,8 +38,8 @@ export const usePokemonCardStyles = createStyles((theme) => ({
     height: 'fit-content',
     padding: '0.25rem 0.25rem',
     borderRadius: '100%',
-    bottom: '-22px',
-    right: 'calc(50% - 22px)',
+    bottom: '-23px',
+    right: 'calc(50% - 23px)',
     zIndex: 2,
   },
   actionIcon: {
