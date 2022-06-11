@@ -14,9 +14,7 @@ const initialState: State = {
 };
 
 const addNewUserPokemons = (state: State, newUserPokemons: string) => {
-  console.log('newUserPokemons', newUserPokemons);
   const pokemonsIds: number[] = JSON.parse(newUserPokemons);
-  console.log('pokemonsIds', pokemonsIds);
   state.pokemonsIds = pokemonsIds;
 };
 

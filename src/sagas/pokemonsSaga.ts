@@ -1,14 +1,25 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  select,
+  takeEvery,
+} from 'redux-saga/effects';
 
 import { instance } from '../config';
 import {
   PokemonsAction,
   PokemonsActionTypes,
-  GetPokemonsRequestedAction,
+  GetPokemonRequestedAction,
 } from '../actionTypes';
 import { GetPokemonsResponse, GetPokemonResponse } from '../types';
+import { RootState } from '../reducers';
 
-const fetchPokemons = async (offset: number): Promise<GetPokemonResponse[]> => {
+interface FetchPokemonsResponse {
+  newPokemons: GetPokemonResponse[];
+  nextOffset: number;
+}
+
+const fetchPokemons = async (offset: number): Promise<FetchPokemonsResponse> => {
   const { data: pokemons } = await instance.get<GetPokemonsResponse>(
     `pokemon?offset=${offset}&limit=20}`,
   );
@@ -19,21 +30,29 @@ const fetchPokemons = async (offset: number): Promise<GetPokemonResponse[]> => {
   });
 
   const newPokemons = await Promise.all(pokemonArray);
-  return newPokemons;
+  const params = new URLSearchParams(pokemons.next.split('?')[1]);
+  const nextOffset = Number(params.get('offset')) || 0;
+
+  return { newPokemons, nextOffset };
 };
 
-function* runGetPokemons(action: GetPokemonsRequestedAction) {
-  const {
-    payload: { offset },
-  } = action;
+const fetchPokemon = async (query: string | number): Promise<GetPokemonResponse> => {
+  const { data: pokemon } = await instance.get<GetPokemonResponse>(
+    `pokemon/${query}`,
+  );
+  return pokemon;
+};
 
+function* runGetPokemons() {
   try {
-    const pokemons: GetPokemonResponse[] = yield call(fetchPokemons, offset);
+    const offset: number = yield select((state: RootState) => state.pokemons.offset);
+    const { newPokemons, nextOffset }: FetchPokemonsResponse = yield call(fetchPokemons, offset);
 
     yield put<PokemonsAction>({
       type: PokemonsActionTypes.GET_POKEMONS_SUCCEEDED,
       payload: {
-        pokemons,
+        newPokemons,
+        nextOffset,
       },
     });
   } catch (error) {
@@ -48,4 +67,35 @@ function* runGetPokemons(action: GetPokemonsRequestedAction) {
 
 export function* getPokemons() {
   yield takeEvery(PokemonsActionTypes.GET_POKEMONS_REQUESTED, runGetPokemons);
+}
+
+function* runGetPokemon(action: GetPokemonRequestedAction) {
+  const {
+    payload: { query },
+  } = action;
+
+  try {
+    const newPokemon: GetPokemonResponse = yield call(
+      fetchPokemon,
+      query.toString().toLowerCase(),
+    );
+
+    yield put<PokemonsAction>({
+      type: PokemonsActionTypes.GET_POKEMON_SUCCEEDED,
+      payload: {
+        newPokemon,
+      },
+    });
+  } catch (error) {
+    yield put<PokemonsAction>({
+      type: PokemonsActionTypes.GET_POKEMON_FAILED,
+      payload: {
+        error,
+      },
+    });
+  }
+}
+
+export function* getPokemon() {
+  yield takeEvery(PokemonsActionTypes.GET_POKEMON_REQUESTED, runGetPokemon);
 }

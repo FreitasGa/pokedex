@@ -14,7 +14,6 @@ import { useInputState } from '@mantine/hooks';
 
 import {
   getPokemonsArray,
-  getPokemonsLength,
   getPokemonsLoading,
 } from '../selectors';
 import {
@@ -22,6 +21,7 @@ import {
   GetPokemonsRequestedAction,
   GetUserPokemonsRequestedAction,
   UserActionTypes,
+  GetPokemonRequestedAction,
 } from '../actionTypes';
 import { withHeader } from '../hocs';
 import { PokemonCard } from '../components';
@@ -35,28 +35,34 @@ const Home = () => {
   const { cx, classes } = useHomeStyles();
 
   const pokemonsArray = useTypedSelector(getPokemonsArray);
-  const pokemonsLength = useTypedSelector(getPokemonsLength);
   const pokemonsLoading = useTypedSelector(getPokemonsLoading);
 
   const [searchValue, setSearchValue] = useInputState('');
 
   const fuse = useMemo(() => new Fuse(pokemonsArray, {
-    keys: ['id', 'name'],
+    keys: ['formattedId', 'name'],
     threshold: 0.3,
   }), [pokemonsArray]);
 
   const filteredPokemonsArray = useMemo(() => {
     if (searchValue === '') return pokemonsArray;
+
     const result = fuse.search(searchValue);
     return result.map(({ item }) => item);
   }, [searchValue, fuse, pokemonsArray]);
 
-  const getPokemons = (offset: number) => {
+  const getPokemons = () => {
     if (pokemonsLoading) return;
 
     dispatch<GetPokemonsRequestedAction>({
       type: PokemonsActionTypes.GET_POKEMONS_REQUESTED,
-      payload: { offset },
+    });
+  };
+
+  const getPokemon = (query: string | number) => {
+    dispatch<GetPokemonRequestedAction>({
+      type: PokemonsActionTypes.GET_POKEMON_REQUESTED,
+      payload: { query },
     });
   };
 
@@ -67,9 +73,15 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getPokemons(0);
+    getPokemons();
     getSelectedPokemons();
   }, []);
+
+  useEffect(() => {
+    if (filteredPokemonsArray.length === 0 && searchValue !== '') {
+      getPokemon(searchValue);
+    }
+  }, [filteredPokemonsArray, searchValue]);
 
   return (
     <Box className={classes.wrapper}>
@@ -103,7 +115,7 @@ const Home = () => {
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </SimpleGrid>
-        <Waypoint onEnter={() => getPokemons(pokemonsLength)}>
+        <Waypoint onEnter={getPokemons}>
           <Center py="xs">
             <Pokeball
               className={cx(classes.pokeball, {

@@ -9,17 +9,20 @@ interface State {
     [key: number]: Pokemon;
   };
   allIds: number[];
+  offset: number;
   loading: boolean;
 }
 
 const initialState: State = {
   byId: {},
   allIds: [],
+  offset: 0,
   loading: false,
 };
 
 const addNewPokemons = (state: State, newPokemons: GetPokemonResponse[]) => {
   newPokemons.forEach((newPokemon) => {
+    const formattedId = newPokemon.id.toString().padStart(3, '0');
     const height = newPokemon.height / 10; // dm to m
     const weight = newPokemon.weight / 10; // hg to kg
     const types = newPokemon.types
@@ -35,6 +38,7 @@ const addNewPokemons = (state: State, newPokemons: GetPokemonResponse[]) => {
 
     state.byId[newPokemon.id] = {
       id: newPokemon.id,
+      formattedId,
       name: newPokemon.name,
       height,
       weight,
@@ -58,7 +62,21 @@ export const pokemonsReducer = produce(
         return state;
 
       case PokemonsActionTypes.GET_POKEMONS_SUCCEEDED:
-        addNewPokemons(state, action.payload.pokemons);
+        addNewPokemons(state, action.payload.newPokemons);
+        state.offset = action.payload.nextOffset;
+        state.loading = false;
+        return state;
+
+      case PokemonsActionTypes.GET_POKEMON_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case PokemonsActionTypes.GET_POKEMON_FAILED:
+        state.loading = false;
+        return state;
+
+      case PokemonsActionTypes.GET_POKEMON_SUCCEEDED:
+        addNewPokemons(state, [action.payload.newPokemon]);
         state.loading = false;
         return state;
 

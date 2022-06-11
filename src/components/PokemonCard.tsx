@@ -17,7 +17,6 @@ import {
   backgroundColorByType,
   capitalize,
   colorByType,
-  formatId,
 } from './utils';
 import { usePokemonCardStyles } from '../styles/components';
 import pokeballBackground from '../assets/pokeballBackground.png';
@@ -42,7 +41,6 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
   const isSelected = useTypedSelector((state) => getIsPokemonSelected(state, pokemon.id));
 
   const capitalizedName = capitalize(pokemon.name);
-  const formattedId = formatId(pokemon.id);
 
   const handleCardClick = () => {
     modals.openContextModal('PokemonModal', {
@@ -118,7 +116,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
         </Box>
       </Box>
       <Box className={classes.infoWrapper} p="md">
-        <Text className={classes.pokemonId}>{formattedId}</Text>
+        <Text className={classes.pokemonId}>{`#${pokemon.formattedId}`}</Text>
         <Title className={classes.pokemonName} order={3}>
           {capitalizedName}
         </Title>

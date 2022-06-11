@@ -51,8 +51,3 @@ export const backgroundColorByType = (type: TypeName) => {
 };
 
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-
-export const formatId = (id: number) => {
-  const idString = id.toString().padStart(3, '0');
-  return `#${idString}`;
-};

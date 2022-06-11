@@ -12,8 +12,10 @@ import {
   Stack,
   Text,
   Title,
+  useMantineTheme,
 } from '@mantine/core';
 import { ContextModalProps } from '@mantine/modals';
+import { useMediaQuery } from '@mantine/hooks';
 import { Pokeball } from 'tabler-icons-react';
 
 import { usePokemonModalStyles } from '../styles/components';
@@ -27,7 +29,6 @@ import {
   backgroundColorByType,
   capitalize,
   colorByType,
-  formatId,
 } from './utils';
 import pokeballBackground from '../assets/pokeballBackground.png';
 import { Move } from './Move';
@@ -51,6 +52,9 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   } = props;
 
   const dispatch = useTypedDispatch();
+  const theme = useMantineTheme();
+  const matches = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
+
   const { classes } = usePokemonModalStyles();
 
   const pokemon = useTypedSelector((state) => getPokemonById(state, pokemonId));
@@ -59,7 +63,6 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   const isSelected = useTypedSelector((state) => getIsPokemonSelected(state, pokemon.id));
 
   const capitalizedName = capitalize(pokemon.name);
-  const formattedId = formatId(pokemon.id);
 
   const handleIconClick = () => {
     dispatch<ToggleUserPokemonRequestedAction>({
@@ -100,8 +103,8 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
               className={classes.image}
               src={pokemon.image}
               alt={pokemon.name}
-              width={380}
-              height={380}
+              width={matches ? '100%' : 380}
+              height={matches ? '100%' : 380}
             />
           </Box>
           <Box className={classes.actionWrapper}>
@@ -121,7 +124,7 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
         </Box>
         <Box className={classes.infoWrapper}>
           <Text className={classes.pokemonId}>
-            {formattedId}
+            {`#${pokemon.formattedId}`}
           </Text>
           <Title className={classes.pokemonName} order={2}>
             {capitalizedName}

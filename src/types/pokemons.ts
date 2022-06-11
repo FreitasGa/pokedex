@@ -33,6 +33,7 @@ export interface PokemonTypes {
 
 export interface Pokemon {
   id: number;
+  formattedId: string;
   name: string;
   height: number;
   weight: number;
