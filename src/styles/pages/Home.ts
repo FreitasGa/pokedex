@@ -13,5 +13,6 @@ export const useHomeStyles = createStyles(() => ({
     top: 0,
     zIndex: 10,
     backgroundColor: '#fff',
+    padding: '1rem 1rem',
   },
 }));

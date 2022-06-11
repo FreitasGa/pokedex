@@ -60,39 +60,44 @@ const Home = () => {
   }, []);
 
   return (
-    <Container className={classes.wrapper} size="xl">
-      <Box className={classes.heading}>
-        <h1>Home Page</h1>
+    <Box className={classes.wrapper}>
+      <Container className={classes.heading} size="xl">
         <Box>
           <TextInput
-            label="Busque por nome ou número"
-            placeholder="Ex: Pikachu ou 025"
             value={searchValue}
             onChange={setSearchValue}
+            icon={<Pokeball />}
+            size="md"
+            radius="sm"
+            type="search"
+            label="Busque por nome ou número"
+            placeholder="Ex: Pikachu ou 025"
           />
         </Box>
-      </Box>
-      <SimpleGrid
-        cols={5}
-        spacing="xl"
-        breakpoints={[
-          { maxWidth: theme.breakpoints.xl, cols: 5 },
-          { maxWidth: theme.breakpoints.lg, cols: 4 },
-          { maxWidth: theme.breakpoints.md, cols: 3 },
-          { maxWidth: theme.breakpoints.sm, cols: 2 },
-          { maxWidth: theme.breakpoints.xs, cols: 1 },
-        ]}
-      >
-        {filteredPokemonsArray.map((pokemon) => (
-          <PokemonCard key={pokemon.id} pokemon={pokemon} selected={false} />
-        ))}
-      </SimpleGrid>
-      <Waypoint onEnter={() => getPokemons(pokemonsLength)}>
-        <Center py="xs">
-          <Pokeball />
-        </Center>
-      </Waypoint>
-    </Container>
+      </Container>
+      <Container size="xl">
+        <SimpleGrid
+          cols={5}
+          spacing="xl"
+          breakpoints={[
+            { maxWidth: theme.breakpoints.xl, cols: 5 },
+            { maxWidth: theme.breakpoints.lg, cols: 4 },
+            { maxWidth: theme.breakpoints.md, cols: 3 },
+            { maxWidth: theme.breakpoints.sm, cols: 2 },
+            { maxWidth: theme.breakpoints.xs, cols: 1 },
+          ]}
+        >
+          {filteredPokemonsArray.map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} selected={false} />
+          ))}
+        </SimpleGrid>
+        <Waypoint onEnter={() => getPokemons(pokemonsLength)}>
+          <Center py="xs">
+            <Pokeball />
+          </Center>
+        </Waypoint>
+      </Container>
+    </Box>
   );
 };
 
