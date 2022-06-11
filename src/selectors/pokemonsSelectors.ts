@@ -12,3 +12,8 @@ export const getPokemonsArray = createSelector(
   getPokemonsObject,
   (pokemonsObject) => Object.values(pokemonsObject),
 );
+
+export const getPokemonMovesIds = createSelector(
+  getPokemonById,
+  (pokemon) => pokemon.movesIds,
+);

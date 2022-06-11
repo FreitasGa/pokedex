@@ -22,7 +22,7 @@ export interface PokemonMove {
   id: number;
   name: string;
   description: string;
-  damageClass: string;
+  damageCategory: string;
   type: TypeName;
 }
 
@@ -38,5 +38,5 @@ export interface Pokemon {
   weight: number;
   types: PokemonTypes[];
   image: string;
-  moves?: PokemonMove[];
+  movesIds: number[];
 }

@@ -17,7 +17,7 @@ import {
   getPokemonsLength,
   getPokemonsLoading,
 } from '../selectors';
-import { ActionTypes, GetPokemonsRequestedAction } from '../actionTypes';
+import { PokemonsActionTypes, GetPokemonsRequestedAction } from '../actionTypes';
 import { withHeader } from '../hocs';
 import { PokemonCard } from '../components';
 import { useHomeStyles } from '../styles/pages';
@@ -50,7 +50,7 @@ const Home = () => {
     if (pokemonsLoading) return;
 
     dispatch<GetPokemonsRequestedAction>({
-      type: ActionTypes.GET_POKEMONS_REQUESTED,
+      type: PokemonsActionTypes.GET_POKEMONS_REQUESTED,
       payload: { offset },
     });
   };

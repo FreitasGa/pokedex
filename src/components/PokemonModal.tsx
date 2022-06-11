@@ -17,7 +17,7 @@ import { useBooleanToggle } from '@mantine/hooks';
 import { Pokeball } from 'tabler-icons-react';
 
 import { usePokemonModalStyles } from '../styles/components';
-import { ActionTypes, GetPokemonMoveRequestedAction } from '../actionTypes';
+import { GetMovesRequestedAction, MovesActionTypes } from '../actionTypes';
 import {
   backgroundColorByType,
   capitalize,
@@ -26,7 +26,7 @@ import {
 } from './utils';
 import pokeballBackground from '../assets/pokeballBackground.png';
 import { Move } from './Move';
-import { getPokemonById } from '../selectors';
+import { getMovesArrayByIds, getPokemonById } from '../selectors';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
 
 type PokemonModalProps = {
@@ -45,6 +45,8 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   const { classes } = usePokemonModalStyles();
 
   const pokemon = useTypedSelector((state) => getPokemonById(state, pokemonId));
+  const moves = useTypedSelector((state) => getMovesArrayByIds(state, pokemon.movesIds));
+
   const [isSelected, toggleIsSelected] = useBooleanToggle(selected);
 
   const capitalizedName = capitalize(pokemon.name);
@@ -54,9 +56,9 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   const handleCloseClick = () => closeModal(id);
 
   useEffect(() => {
-    dispatch<GetPokemonMoveRequestedAction>({
-      type: ActionTypes.GET_POKEMON_MOVE_REQUESTED,
-      payload: { id: pokemon.id },
+    dispatch<GetMovesRequestedAction>({
+      type: MovesActionTypes.GET_MOVES_REQUESTED,
+      payload: { movesIds: pokemon.movesIds },
     });
   }, []);
 
@@ -134,12 +136,10 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
           offsetScrollbars
         >
           <Stack className={classes.movesGroup} spacing={4}>
-            {pokemon.moves?.map((move, index) => (
+            {moves.map((move, index) => (
               <>
                 <Move key={move.id} move={move} />
-                {(pokemon.moves && index !== pokemon.moves.length - 1) && (
-                  <Divider />
-                )}
+                {index !== moves.length - 1 && <Divider />}
               </>
             ))}
           </Stack>
