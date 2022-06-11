@@ -24,7 +24,7 @@ const pokeballLoader = keyframes`
   }
 `;
 
-export const useHomeStyles = createStyles(() => ({
+export const useHomeStyles = createStyles((theme) => ({
   wrapper: {
     position: 'relative',
   },
@@ -38,6 +38,11 @@ export const useHomeStyles = createStyles(() => ({
     zIndex: 10,
     backgroundColor: '#fff',
     padding: '1rem 1rem',
+  },
+  searchInput: {
+    [theme.fn.smallerThan('sm')]: {
+      width: '100%',
+    },
   },
   pokeball: {
     animation: `${pokeball} 2s cubic-bezier(0.55, 0.06, 0.68, 0.19) infinite`,

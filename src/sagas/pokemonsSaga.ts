@@ -75,10 +75,7 @@ function* runGetPokemon(action: GetPokemonRequestedAction) {
   } = action;
 
   try {
-    const newPokemon: GetPokemonResponse = yield call(
-      fetchPokemon,
-      query.toString().toLowerCase(),
-    );
+    const newPokemon: GetPokemonResponse = yield call(fetchPokemon, query);
 
     yield put<PokemonsAction>({
       type: PokemonsActionTypes.GET_POKEMON_SUCCEEDED,

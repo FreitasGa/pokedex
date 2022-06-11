@@ -86,6 +86,13 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
         onClick={handleCloseClick}
         aria-label="Close modal"
         size="xl"
+        styles={{
+          hover: {
+            '&: hover': {
+              backgroundColor: 'transparent',
+            },
+          },
+        }}
       />
       <Box className={classes.leftSideWrapper}>
         <Box className={classes.upperWrapper}>

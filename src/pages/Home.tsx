@@ -41,13 +41,13 @@ const Home = () => {
 
   const fuse = useMemo(() => new Fuse(pokemonsArray, {
     keys: ['formattedId', 'name'],
-    threshold: 0.3,
+    threshold: 0.2,
   }), [pokemonsArray]);
 
   const filteredPokemonsArray = useMemo(() => {
     if (searchValue === '') return pokemonsArray;
 
-    const result = fuse.search(searchValue);
+    const result = fuse.search(searchValue.toLowerCase());
     return result.map(({ item }) => item);
   }, [searchValue, fuse, pokemonsArray]);
 
@@ -79,25 +79,29 @@ const Home = () => {
 
   useEffect(() => {
     if (filteredPokemonsArray.length === 0 && searchValue !== '') {
-      getPokemon(searchValue);
+      getPokemon(searchValue.toLowerCase());
     }
   }, [filteredPokemonsArray, searchValue]);
 
   return (
     <Box className={classes.wrapper}>
       <Container className={classes.heading} size="xl">
-        <Box>
-          <TextInput
-            value={searchValue}
-            onChange={setSearchValue}
-            icon={<Pokeball />}
-            size="md"
-            radius="sm"
-            type="search"
-            label="Busque por nome ou número"
-            placeholder="Ex: Pikachu ou 025"
-          />
-        </Box>
+        <TextInput
+          className={classes.searchInput}
+          value={searchValue}
+          onChange={setSearchValue}
+          icon={<Pokeball />}
+          size="md"
+          radius="sm"
+          type="search"
+          label="Busque por nome ou número"
+          placeholder="Ex: Pikachu ou 025"
+          styles={{
+            label: {
+              fontSize: '18px',
+            },
+          }}
+        />
       </Container>
       <Container size="xl">
         <SimpleGrid
