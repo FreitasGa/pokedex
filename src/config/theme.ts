@@ -5,4 +5,5 @@ export const theme: MantineThemeOverride = {
   headings: {
     fontFamily: 'Poppins, -apple-system, BlinkMacSystemFont, sans-serif',
   },
+  primaryColor: 'dark',
 };

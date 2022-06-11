@@ -1,68 +1,56 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Burger,
+  Button,
   Container,
   Group,
   Header as HeaderWrapper,
-  Paper,
   Title,
-  Transition,
 } from '@mantine/core';
-import { useBooleanToggle } from '@mantine/hooks';
+import { Home, User } from 'tabler-icons-react';
 
 import { useHeaderStyles } from '../styles/components';
 
 const links = [
   {
-    name: 'Home',
+    name: 'Inicio',
     pathname: '/',
+    icon: <Home size={18} />,
+  },
+  {
+    name: 'Coleção',
+    pathname: '/collection',
+    icon: <User size={18} />,
   },
 ];
 
 export const Header = () => {
   const location = useLocation();
-  const { classes, cx } = useHeaderStyles();
+  const { classes } = useHeaderStyles();
 
-  const [open, toggleOpen] = useBooleanToggle(false);
   const [activeLink, setActiveLink] = useState<string>(location.pathname);
 
   const items = links.map((link) => (
-    <Link
-      className={cx(classes.link, {
-        [classes.linkActive]: activeLink === link.pathname,
-      })}
+    <Button
+      className={classes.link}
       key={link.name}
+      component={Link}
       to={link.pathname}
-      onClick={() => {
-        setActiveLink(link.pathname);
-        toggleOpen(false);
-      }}
+      onClick={() => setActiveLink(link.pathname)}
+      leftIcon={link.icon}
+      variant={activeLink === link.pathname ? 'filled' : 'subtle'}
     >
       {link.name}
-    </Link>
+    </Button>
   ));
 
   return (
-    <HeaderWrapper className={classes.wrapper} height={60}>
+    <HeaderWrapper className={classes.wrapper} height="fit-content">
       <Container className={classes.header} size="xl">
         <Title order={2}>Pokédex</Title>
-        <Group className={classes.links} spacing={5}>
+        <Group className={classes.linkGroup} spacing={5}>
           {items}
         </Group>
-        <Burger
-          className={classes.burger}
-          opened={open}
-          onClick={() => toggleOpen()}
-          size="sm"
-        />
-        <Transition transition="scale-y" duration={200} mounted={open}>
-          {(styles) => (
-            <Paper className={classes.dropdown} withBorder style={styles}>
-              {items}
-            </Paper>
-          )}
-        </Transition>
       </Container>
     </HeaderWrapper>
   );
