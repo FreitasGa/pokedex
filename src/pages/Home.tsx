@@ -17,7 +17,12 @@ import {
   getPokemonsLength,
   getPokemonsLoading,
 } from '../selectors';
-import { PokemonsActionTypes, GetPokemonsRequestedAction } from '../actionTypes';
+import {
+  PokemonsActionTypes,
+  GetPokemonsRequestedAction,
+  GetUserPokemonsRequestedAction,
+  UserActionTypes,
+} from '../actionTypes';
 import { withHeader } from '../hocs';
 import { PokemonCard } from '../components';
 import { useHomeStyles } from '../styles/pages';
@@ -55,8 +60,15 @@ const Home = () => {
     });
   };
 
+  const getSelectedPokemons = () => {
+    dispatch<GetUserPokemonsRequestedAction>({
+      type: UserActionTypes.GET_USER_POKEMONS_REQUESTED,
+    });
+  };
+
   useEffect(() => {
     getPokemons(0);
+    getSelectedPokemons();
   }, []);
 
   return (
@@ -88,7 +100,7 @@ const Home = () => {
           ]}
         >
           {filteredPokemonsArray.map((pokemon) => (
-            <PokemonCard key={pokemon.id} pokemon={pokemon} selected={false} />
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </SimpleGrid>
         <Waypoint onEnter={() => getPokemons(pokemonsLength)}>

@@ -9,7 +9,6 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { useBooleanToggle } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 import { Pokeball } from 'tabler-icons-react';
 
@@ -22,19 +21,25 @@ import {
 } from './utils';
 import { usePokemonCardStyles } from '../styles/components';
 import pokeballBackground from '../assets/pokeballBackground.png';
+import { useTypedDispatch, useTypedSelector } from '../hooks';
+import { getIsPokemonSelected } from '../selectors';
+import {
+  ToggleUserPokemonRequestedAction,
+  UserActionTypes,
+} from '../actionTypes';
 
 interface PokemonPreviewProps {
   pokemon: Pokemon;
-  selected: boolean;
 }
 
 export const PokemonCard = (props: PokemonPreviewProps) => {
-  const { pokemon, selected } = props;
+  const { pokemon } = props;
 
+  const dispatch = useTypedDispatch();
   const modals = useModals();
   const { classes } = usePokemonCardStyles();
 
-  const [isSelected, toggleIsSelected] = useBooleanToggle(selected);
+  const isSelected = useTypedSelector((state) => getIsPokemonSelected(state, pokemon.id));
 
   const capitalizedName = capitalize(pokemon.name);
   const formattedId = formatId(pokemon.id);
@@ -65,7 +70,10 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    toggleIsSelected();
+    dispatch<ToggleUserPokemonRequestedAction>({
+      type: UserActionTypes.TOGGLE_USER_POKEMON_REQUESTED,
+      payload: { pokemonId: pokemon.id },
+    });
   };
 
   return (
@@ -81,10 +89,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
           className={classes.imageWrapper}
           sx={{ backgroundColor: backgroundColorByType(pokemon.types[0].name) }}
         >
-          <Image
-            className={classes.imageBackground}
-            src={pokeballBackground}
-          />
+          <Image className={classes.imageBackground} src={pokeballBackground} />
           <Image
             className={classes.image}
             src={pokemon.image}
@@ -109,9 +114,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
         </Box>
       </Box>
       <Box className={classes.infoWrapper} p="md">
-        <Text className={classes.pokemonId}>
-          {formattedId}
-        </Text>
+        <Text className={classes.pokemonId}>{formattedId}</Text>
         <Title className={classes.pokemonName} order={3}>
           {capitalizedName}
         </Title>

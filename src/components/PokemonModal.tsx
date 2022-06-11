@@ -13,11 +13,15 @@ import {
   Title,
 } from '@mantine/core';
 import { ContextModalProps } from '@mantine/modals';
-import { useBooleanToggle } from '@mantine/hooks';
 import { Pokeball } from 'tabler-icons-react';
 
 import { usePokemonModalStyles } from '../styles/components';
-import { GetMovesRequestedAction, MovesActionTypes } from '../actionTypes';
+import {
+  GetMovesRequestedAction,
+  MovesActionTypes,
+  ToggleUserPokemonRequestedAction,
+  UserActionTypes,
+} from '../actionTypes';
 import {
   backgroundColorByType,
   capitalize,
@@ -26,19 +30,22 @@ import {
 } from './utils';
 import pokeballBackground from '../assets/pokeballBackground.png';
 import { Move } from './Move';
-import { getMovesArrayByIds, getPokemonById } from '../selectors';
+import {
+  getIsPokemonSelected,
+  getMovesArrayByIds,
+  getPokemonById,
+} from '../selectors';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
 
 type PokemonModalProps = {
   pokemonId: number;
-  selected: boolean;
 };
 
 export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   const {
     id,
     context: { closeModal },
-    innerProps: { pokemonId, selected },
+    innerProps: { pokemonId },
   } = props;
 
   const dispatch = useTypedDispatch();
@@ -46,13 +53,17 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
 
   const pokemon = useTypedSelector((state) => getPokemonById(state, pokemonId));
   const moves = useTypedSelector((state) => getMovesArrayByIds(state, pokemon.movesIds));
-
-  const [isSelected, toggleIsSelected] = useBooleanToggle(selected);
+  const isSelected = useTypedSelector((state) => getIsPokemonSelected(state, pokemon.id));
 
   const capitalizedName = capitalize(pokemon.name);
   const formattedId = formatId(pokemon.id);
 
-  const handleIconClick = () => toggleIsSelected();
+  const handleIconClick = () => {
+    dispatch<ToggleUserPokemonRequestedAction>({
+      type: UserActionTypes.TOGGLE_USER_POKEMON_REQUESTED,
+      payload: { pokemonId: pokemon.id },
+    });
+  };
   const handleCloseClick = () => closeModal(id);
 
   useEffect(() => {
@@ -130,11 +141,7 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
         <Title className={classes.pokemonName} order={3}>
           Ataques
         </Title>
-        <ScrollArea
-          scrollbarSize={6}
-          type="scroll"
-          offsetScrollbars
-        >
+        <ScrollArea scrollbarSize={6} type="scroll" offsetScrollbars>
           <Stack className={classes.movesGroup} spacing={4}>
             {moves.map((move, index) => (
               <>

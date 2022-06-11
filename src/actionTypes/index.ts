@@ -1,2 +1,3 @@
-export * from './pokemonsActionType';
-export * from './movesActionType';
+export * from './pokemonsActionTypes';
+export * from './movesActionTypes';
+export * from './userActionTypes';
