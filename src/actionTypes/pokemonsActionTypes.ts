@@ -7,6 +7,9 @@ export enum PokemonsActionTypes {
   GET_POKEMON_REQUESTED = 'GET_POKEMON_REQUESTED',
   GET_POKEMON_SUCCEEDED = 'GET_POKEMON_SUCCEEDED',
   GET_POKEMON_FAILED = 'GET_POKEMON_FAILED',
+  GET_POKEMONS_BY_IDS_REQUESTED = 'GET_POKEMONS_BY_IDS_REQUESTED',
+  GET_POKEMONS_BY_IDS_SUCCEEDED = 'GET_POKEMONS_BY_IDS_SUCCEEDED',
+  GET_POKEMONS_BY_IDS_FAILED = 'GET_POKEMONS_BY_IDS_FAILED',
 }
 
 export interface GetPokemonsRequestedAction {
@@ -32,7 +35,7 @@ export interface GetPokemonRequestedAction {
   type: PokemonsActionTypes.GET_POKEMON_REQUESTED;
   payload: {
     query: string | number;
-  }
+  };
 }
 
 export interface GetPokemonSucceededAction {
@@ -49,10 +52,31 @@ export interface GetPokemonFailedAction {
   };
 }
 
+export interface GetPokemonsByIdsRequestedAction {
+  type: PokemonsActionTypes.GET_POKEMONS_BY_IDS_REQUESTED;
+}
+
+export interface GetPokemonsByIdsSucceededAction {
+  type: PokemonsActionTypes.GET_POKEMONS_BY_IDS_SUCCEEDED;
+  payload: {
+    newPokemons: GetPokemonResponse[];
+  };
+}
+
+export interface GetPokemonsByIdsFailedAction {
+  type: PokemonsActionTypes.GET_POKEMONS_BY_IDS_FAILED;
+  payload: {
+    error: unknown;
+  };
+}
+
 export type PokemonsAction =
   | GetPokemonsRequestedAction
   | GetPokemonsSucceededAction
   | GetPokemonsFailedAction
   | GetPokemonRequestedAction
   | GetPokemonSucceededAction
-  | GetPokemonFailedAction;
+  | GetPokemonFailedAction
+  | GetPokemonsByIdsRequestedAction
+  | GetPokemonsByIdsSucceededAction
+  | GetPokemonsByIdsFailedAction;

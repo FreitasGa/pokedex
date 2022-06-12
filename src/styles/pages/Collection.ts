@@ -24,7 +24,7 @@ const pokeballLoader = keyframes`
   }
 `;
 
-export const useHomeStyles = createStyles(() => ({
+export const useCollectionStyles = createStyles(() => ({
   wrapper: {
   },
   pokeball: {

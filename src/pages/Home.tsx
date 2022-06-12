@@ -4,7 +4,6 @@ import {
   Center,
   Container,
   SimpleGrid,
-  TextInput,
   useMantineTheme,
 } from '@mantine/core';
 import { Waypoint } from 'react-waypoint';
@@ -12,19 +11,14 @@ import { Pokeball } from 'tabler-icons-react';
 import Fuse from 'fuse.js';
 import { useInputState } from '@mantine/hooks';
 
-import {
-  getPokemonsArray,
-  getPokemonsLoading,
-} from '../selectors';
+import { getPokemonsArray, getPokemonsLoading } from '../selectors';
 import {
   PokemonsActionTypes,
   GetPokemonsRequestedAction,
-  GetUserPokemonsRequestedAction,
-  UserActionTypes,
   GetPokemonRequestedAction,
 } from '../actionTypes';
 import { withHeader } from '../hocs';
-import { PokemonCard } from '../components';
+import { PageHeading, PokemonCard } from '../components';
 import { useHomeStyles } from '../styles/pages';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
 
@@ -66,16 +60,9 @@ const Home = () => {
     });
   };
 
-  const getSelectedPokemons = () => {
-    dispatch<GetUserPokemonsRequestedAction>({
-      type: UserActionTypes.GET_USER_POKEMONS_REQUESTED,
-    });
-  };
-
-  useEffect(() => {
-    getPokemons();
-    getSelectedPokemons();
-  }, []);
+  // useEffect(() => {
+  //   getPokemons();
+  // }, []);
 
   useEffect(() => {
     if (filteredPokemonsArray.length === 0 && searchValue !== '') {
@@ -85,24 +72,11 @@ const Home = () => {
 
   return (
     <Box className={classes.wrapper}>
-      <Container className={classes.heading} size="xl">
-        <TextInput
-          className={classes.searchInput}
-          value={searchValue}
-          onChange={setSearchValue}
-          icon={<Pokeball />}
-          size="md"
-          radius="sm"
-          type="search"
-          label="Busque por nome ou número"
-          placeholder="Ex: Pikachu ou 025"
-          styles={{
-            label: {
-              fontSize: '18px',
-            },
-          }}
-        />
-      </Container>
+      <PageHeading
+        title="Pokemons"
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
       <Container size="xl">
         <SimpleGrid
           cols={5}

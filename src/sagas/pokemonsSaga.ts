@@ -43,6 +43,18 @@ const fetchPokemon = async (query: string | number): Promise<GetPokemonResponse>
   return pokemon;
 };
 
+const fetchPokemonsByIds = async (ids: number[]): Promise<GetPokemonResponse[]> => {
+  const pokemonArray = ids.map(async (id) => {
+    const { data: pokemon } = await instance.get<GetPokemonResponse>(
+      `pokemon/${id}`,
+    );
+    return pokemon;
+  });
+
+  const newPokemons = await Promise.all(pokemonArray);
+  return newPokemons;
+};
+
 function* runGetPokemons() {
   try {
     const offset: number = yield select((state: RootState) => state.pokemons.offset);
@@ -95,4 +107,29 @@ function* runGetPokemon(action: GetPokemonRequestedAction) {
 
 export function* getPokemon() {
   yield takeEvery(PokemonsActionTypes.GET_POKEMON_REQUESTED, runGetPokemon);
+}
+
+function* runGetPokemonsByIds() {
+  try {
+    const ids: number[] = yield select((state: RootState) => state.user.pokemonsIds);
+    const newPokemons: GetPokemonResponse[] = yield call(fetchPokemonsByIds, ids);
+
+    yield put<PokemonsAction>({
+      type: PokemonsActionTypes.GET_POKEMONS_BY_IDS_SUCCEEDED,
+      payload: {
+        newPokemons,
+      },
+    });
+  } catch (error) {
+    yield put<PokemonsAction>({
+      type: PokemonsActionTypes.GET_POKEMONS_BY_IDS_FAILED,
+      payload: {
+        error,
+      },
+    });
+  }
+}
+
+export function* getPokemonsByIds() {
+  yield takeEvery(PokemonsActionTypes.GET_POKEMONS_BY_IDS_REQUESTED, runGetPokemonsByIds);
 }

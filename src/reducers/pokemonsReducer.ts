@@ -80,6 +80,19 @@ export const pokemonsReducer = produce(
         state.loading = false;
         return state;
 
+      case PokemonsActionTypes.GET_POKEMONS_BY_IDS_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case PokemonsActionTypes.GET_POKEMONS_BY_IDS_FAILED:
+        state.loading = false;
+        return state;
+
+      case PokemonsActionTypes.GET_POKEMONS_BY_IDS_SUCCEEDED:
+        addNewPokemons(state, action.payload.newPokemons);
+        state.loading = false;
+        return state;
+
       default:
         return state;
     }
