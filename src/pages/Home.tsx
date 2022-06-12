@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Center,
@@ -8,8 +8,7 @@ import {
 } from '@mantine/core';
 import { Waypoint } from 'react-waypoint';
 import { Pokeball } from 'tabler-icons-react';
-import Fuse from 'fuse.js';
-import { useInputState } from '@mantine/hooks';
+import { useDebouncedValue, useInputState } from '@mantine/hooks';
 
 import { getPokemonsArray, getPokemonsLoading } from '../selectors';
 import {
@@ -20,7 +19,7 @@ import {
 import { withHeader } from '../hocs';
 import { PageHeading, PokemonCard } from '../components';
 import { useHomeStyles } from '../styles/pages';
-import { useTypedDispatch, useTypedSelector } from '../hooks';
+import { useFilter, useTypedDispatch, useTypedSelector } from '../hooks';
 
 const Home = () => {
   const theme = useMantineTheme();
@@ -32,18 +31,12 @@ const Home = () => {
   const pokemonsLoading = useTypedSelector(getPokemonsLoading);
 
   const [searchValue, setSearchValue] = useInputState('');
+  const [debouncedSearchValue] = useDebouncedValue(searchValue, 200);
 
-  const fuse = useMemo(() => new Fuse(pokemonsArray, {
+  const filteredPokemonsArray = useFilter(pokemonsArray, debouncedSearchValue, {
     keys: ['formattedId', 'name'],
     threshold: 0.2,
-  }), [pokemonsArray]);
-
-  const filteredPokemonsArray = useMemo(() => {
-    if (searchValue === '') return pokemonsArray;
-
-    const result = fuse.search(searchValue.toLowerCase());
-    return result.map(({ item }) => item);
-  }, [searchValue, fuse, pokemonsArray]);
+  });
 
   const getPokemons = () => {
     if (pokemonsLoading) return;
@@ -65,10 +58,10 @@ const Home = () => {
   // }, []);
 
   useEffect(() => {
-    if (filteredPokemonsArray.length === 0 && searchValue !== '') {
-      getPokemon(searchValue.toLowerCase());
+    if (filteredPokemonsArray.length === 0 && debouncedSearchValue !== '') {
+      getPokemon(debouncedSearchValue.toLowerCase());
     }
-  }, [filteredPokemonsArray, searchValue]);
+  }, [filteredPokemonsArray, debouncedSearchValue]);
 
   return (
     <Box className={classes.wrapper}>

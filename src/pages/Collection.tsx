@@ -7,12 +7,11 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { useInputState } from '@mantine/hooks';
-import Fuse from 'fuse.js';
+import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { Pokeball } from 'tabler-icons-react';
 
 import { withHeader } from '../hocs';
-import { useTypedDispatch, useTypedSelector } from '../hooks';
+import { useFilter, useTypedDispatch, useTypedSelector } from '../hooks';
 import {
   getPokemonsArray,
   getPokemonsLoading,
@@ -20,7 +19,10 @@ import {
 } from '../selectors';
 import { PageHeading, PokemonCard } from '../components';
 import { useCollectionStyles } from '../styles/pages';
-import { GetPokemonsByIdsRequestedAction, PokemonsActionTypes } from '../actionTypes';
+import {
+  GetPokemonsByIdsRequestedAction,
+  PokemonsActionTypes,
+} from '../actionTypes';
 
 const Collection = () => {
   const dispatch = useTypedDispatch();
@@ -32,22 +34,20 @@ const Collection = () => {
   const userPokemonsIds = useTypedSelector(getUserPokemonsIds);
 
   const [searchValue, setSearchValue] = useInputState('');
+  const [debouncedSearchValue] = useDebouncedValue(searchValue, 200);
 
   const userPokemonsArray = useMemo(() => (
     pokemonsArray.filter((pokemon) => userPokemonsIds.includes(pokemon.id))
   ), [pokemonsArray, userPokemonsIds]);
 
-  const fuse = useMemo(() => new Fuse(userPokemonsArray, {
-    keys: ['formattedId', 'name'],
-    threshold: 0.2,
-  }), [userPokemonsArray]);
-
-  const filteredUserPokemonsArray = useMemo(() => {
-    if (searchValue === '') return userPokemonsArray;
-
-    const result = fuse.search(searchValue.toLowerCase());
-    return result.map(({ item }) => item);
-  }, [searchValue, fuse, userPokemonsArray]);
+  const filteredUserPokemonsArray = useFilter(
+    userPokemonsArray,
+    debouncedSearchValue,
+    {
+      keys: ['formattedId', 'name'],
+      threshold: 0.2,
+    },
+  );
 
   const getPokemonsByIds = () => {
     dispatch<GetPokemonsByIdsRequestedAction>({
