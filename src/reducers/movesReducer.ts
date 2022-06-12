@@ -49,7 +49,7 @@ export const movesReducer = produce(
         return state;
 
       case MovesActionTypes.GET_MOVES_SUCCEEDED:
-        addNewMoves(state, action.payload.moves);
+        addNewMoves(state, action.payload.newMoves);
         state.loading = false;
         return state;
 

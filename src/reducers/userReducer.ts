@@ -30,7 +30,7 @@ export const userReducer = produce(
         return state;
 
       case UserActionTypes.GET_USER_POKEMONS_SUCCEEDED:
-        addNewUserPokemons(state, action.payload.pokemonsIds);
+        addNewUserPokemons(state, action.payload.newUserPokemons);
         state.loading = false;
         return state;
 
@@ -43,7 +43,7 @@ export const userReducer = produce(
         return state;
 
       case UserActionTypes.TOGGLE_USER_POKEMON_SUCCEEDED:
-        addNewUserPokemons(state, action.payload.pokemonsIds);
+        addNewUserPokemons(state, action.payload.newUserPokemons);
         state.loading = false;
         return state;
 

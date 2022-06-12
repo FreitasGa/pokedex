@@ -25,11 +25,7 @@ import {
   ToggleUserPokemonRequestedAction,
   UserActionTypes,
 } from '../actionTypes';
-import {
-  backgroundColorByType,
-  capitalize,
-  colorByType,
-} from './utils';
+import { backgroundColorByType, capitalize, colorByType } from './utils';
 import pokeballBackground from '../assets/pokeballBackground.png';
 import { Move } from './Move';
 import {
@@ -52,6 +48,7 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
   } = props;
 
   const dispatch = useTypedDispatch();
+
   const theme = useMantineTheme();
   const matches = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
 
@@ -70,7 +67,6 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
       payload: { pokemonId: pokemon.id },
     });
   };
-  const handleCloseClick = () => closeModal(id);
 
   useEffect(() => {
     dispatch<GetMovesRequestedAction>({
@@ -83,7 +79,7 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
     <Box className={classes.wrapper}>
       <CloseButton
         className={classes.closeButton}
-        onClick={handleCloseClick}
+        onClick={() => closeModal(id)}
         aria-label="Close modal"
         size="xl"
         styles={{
@@ -130,9 +126,7 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
           </Box>
         </Box>
         <Box className={classes.infoWrapper}>
-          <Text className={classes.pokemonId}>
-            {`#${pokemon.formattedId}`}
-          </Text>
+          <Text className={classes.pokemonId}>{`#${pokemon.formattedId}`}</Text>
           <Title className={classes.pokemonName} order={2}>
             {capitalizedName}
           </Title>

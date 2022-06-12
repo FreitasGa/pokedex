@@ -7,12 +7,12 @@ import {
 
 function* runGetUserPokemons() {
   try {
-    const pokemonsIds = localStorage.getItem('selectedPokemons') || '[]';
+    const newUserPokemons = localStorage.getItem('selectedPokemons') || '[]';
 
     yield put<UserAction>({
       type: UserActionTypes.GET_USER_POKEMONS_SUCCEEDED,
       payload: {
-        pokemonsIds,
+        newUserPokemons,
       },
     });
   } catch (error) {
@@ -46,13 +46,13 @@ function* runToggleUserPokemons(action: ToggleUserPokemonRequestedAction) {
     : [...oldPokemonsIds, pokemonId];
 
   localStorage.setItem('selectedPokemons', JSON.stringify(newPokemonsIds));
-  const pokemonsIds = localStorage.getItem('selectedPokemons') || '[]';
+  const newUserPokemons = localStorage.getItem('selectedPokemons') || '[]';
 
   try {
     yield put<UserAction>({
       type: UserActionTypes.TOGGLE_USER_POKEMON_SUCCEEDED,
       payload: {
-        pokemonsIds,
+        newUserPokemons,
       },
     });
   } catch (error) {

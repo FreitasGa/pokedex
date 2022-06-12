@@ -13,11 +13,7 @@ import { useModals } from '@mantine/modals';
 import { Pokeball } from 'tabler-icons-react';
 
 import { Pokemon } from '../types';
-import {
-  backgroundColorByType,
-  capitalize,
-  colorByType,
-} from './utils';
+import { backgroundColorByType, capitalize, colorByType } from './utils';
 import { usePokemonCardStyles } from '../styles/components';
 import pokeballBackground from '../assets/pokeballBackground.png';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
@@ -35,6 +31,7 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
   const { pokemon } = props;
 
   const dispatch = useTypedDispatch();
+
   const modals = useModals();
   const { classes } = usePokemonCardStyles();
 

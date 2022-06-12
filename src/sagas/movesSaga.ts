@@ -24,12 +24,12 @@ function* runGetMoves(action: GetMovesRequestedAction) {
   } = action;
 
   try {
-    const moves: GetMoveResponse[] = yield call(fetchMoves, movesIds);
+    const newMoves: GetMoveResponse[] = yield call(fetchMoves, movesIds);
 
     yield put<MovesAction>({
       type: MovesActionTypes.GET_MOVES_SUCCEEDED,
       payload: {
-        moves,
+        newMoves,
       },
     });
   } catch (error) {

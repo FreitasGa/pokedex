@@ -26,6 +26,7 @@ import {
 
 const Collection = () => {
   const dispatch = useTypedDispatch();
+
   const theme = useMantineTheme();
   const { cx, classes } = useCollectionStyles();
 

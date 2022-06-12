@@ -28,32 +28,32 @@ const links = [
 
 export const Header = () => {
   const location = useLocation();
+
   const theme = useMantineTheme();
   const matches = useMediaQuery(`(max-width: ${theme.breakpoints.xs}px)`);
+
   const { classes } = useHeaderStyles();
 
   const [activeLink, setActiveLink] = useState<string>(location.pathname);
-
-  const items = links.map((link) => (
-    <Button
-      className={classes.link}
-      key={link.name}
-      component={Link}
-      to={link.pathname}
-      onClick={() => setActiveLink(link.pathname)}
-      leftIcon={matches ? undefined : link.icon}
-      variant={activeLink === link.pathname ? 'filled' : 'subtle'}
-    >
-      {link.name}
-    </Button>
-  ));
 
   return (
     <HeaderWrapper className={classes.wrapper} height="fit-content">
       <Container className={classes.header} size="xl">
         <Title order={2}>Pokédex</Title>
         <Group spacing={5}>
-          {items}
+          {links.map((link) => (
+            <Button
+              className={classes.link}
+              key={link.name}
+              component={Link}
+              to={link.pathname}
+              onClick={() => setActiveLink(link.pathname)}
+              leftIcon={matches ? undefined : link.icon}
+              variant={activeLink === link.pathname ? 'filled' : 'subtle'}
+            >
+              {link.name}
+            </Button>
+          ))}
         </Group>
       </Container>
     </HeaderWrapper>

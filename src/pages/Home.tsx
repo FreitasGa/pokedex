@@ -22,9 +22,9 @@ import { useHomeStyles } from '../styles/pages';
 import { useFilter, useTypedDispatch, useTypedSelector } from '../hooks';
 
 const Home = () => {
-  const theme = useMantineTheme();
   const dispatch = useTypedDispatch();
 
+  const theme = useMantineTheme();
   const { cx, classes } = useHomeStyles();
 
   const pokemonsArray = useTypedSelector(getPokemonsArray);
