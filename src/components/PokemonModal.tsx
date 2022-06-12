@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {
   ActionIcon,
   Badge,
@@ -151,10 +151,10 @@ export const PokemonModal = (props: ContextModalProps<PokemonModalProps>) => {
         <ScrollArea scrollbarSize={6} type="scroll" offsetScrollbars>
           <Stack className={classes.movesGroup} spacing={4}>
             {moves.map((move, index) => (
-              <>
-                <Move key={move.id} move={move} />
+              <Fragment key={move.id}>
+                <Move move={move} />
                 {index !== moves.length - 1 && <Divider />}
-              </>
+              </Fragment>
             ))}
           </Stack>
         </ScrollArea>

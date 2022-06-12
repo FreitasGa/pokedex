@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Center,
@@ -8,7 +8,6 @@ import {
 } from '@mantine/core';
 import { Waypoint } from 'react-waypoint';
 import { Pokeball } from 'tabler-icons-react';
-import { useDebouncedValue, useInputState } from '@mantine/hooks';
 
 import { getPokemonsArray, getPokemonsLoading } from '../selectors';
 import {
@@ -30,16 +29,15 @@ const Home = () => {
   const pokemonsArray = useTypedSelector(getPokemonsArray);
   const pokemonsLoading = useTypedSelector(getPokemonsLoading);
 
-  const [searchValue, setSearchValue] = useInputState('');
-  const [debouncedSearchValue] = useDebouncedValue(searchValue, 200);
+  const [searchValue, setSearchValue] = useState('');
 
-  const filteredPokemonsArray = useFilter(pokemonsArray, debouncedSearchValue, {
+  const filteredPokemonsArray = useFilter(pokemonsArray, searchValue, {
     keys: ['formattedId', 'name'],
     threshold: 0.2,
   });
 
   const getPokemons = () => {
-    if (pokemonsLoading) return;
+    if (pokemonsLoading || searchValue !== '') return;
 
     dispatch<GetPokemonsRequestedAction>({
       type: PokemonsActionTypes.GET_POKEMONS_REQUESTED,
@@ -58,17 +56,16 @@ const Home = () => {
   // }, []);
 
   useEffect(() => {
-    if (filteredPokemonsArray.length === 0 && debouncedSearchValue !== '') {
-      getPokemon(debouncedSearchValue.toLowerCase());
+    if (filteredPokemonsArray.length === 0 && searchValue !== '') {
+      getPokemon(searchValue.toLowerCase());
     }
-  }, [filteredPokemonsArray, debouncedSearchValue]);
+  }, [filteredPokemonsArray, searchValue]);
 
   return (
-    <Box className={classes.wrapper}>
+    <Box>
       <PageHeading
         title="Pokemons"
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
+        setValue={setSearchValue}
       />
       <Container size="xl">
         <SimpleGrid
@@ -87,7 +84,7 @@ const Home = () => {
           ))}
         </SimpleGrid>
         <Waypoint onEnter={getPokemons}>
-          <Center py="xs">
+          <Center py="sm">
             <Pokeball
               className={cx(classes.pokeball, {
                 [classes.pokeballLoading]: pokemonsLoading,

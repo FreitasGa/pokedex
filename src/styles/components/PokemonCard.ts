@@ -5,6 +5,10 @@ export const usePokemonCardStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     cursor: 'pointer',
+
+    '&:active': {
+      transform: 'translateY(1px)',
+    },
   },
   upperWrapper: {
     position: 'relative',

@@ -10,7 +10,7 @@ export const usePageHeadingStyles = createStyles((theme) => ({
     padding: '1rem 1rem',
     marginTop: '1rem',
 
-    [theme.fn.smallerThan('sm')]: {
+    [theme.fn.smallerThan('xs')]: {
       marginTop: 0,
       flexDirection: 'column',
       gap: '1rem',
@@ -20,9 +20,28 @@ export const usePageHeadingStyles = createStyles((theme) => ({
   title: {
     fontWeight: 600,
   },
-  searchInput: {
-    [theme.fn.smallerThan('sm')]: {
+  searchBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: '0.5rem',
+
+    [theme.fn.smallerThan('xs')]: {
       width: '100%',
+    },
+  },
+  searchInput: {
+    [theme.fn.smallerThan('xs')]: {
+      width: '100%',
+    },
+  },
+  searchButton: {
+    height: '36px',
+    width: '36px',
+
+    [theme.fn.smallerThan('xs')]: {
+      minHeight: '42px',
+      minWidth: '42px',
     },
   },
 }));

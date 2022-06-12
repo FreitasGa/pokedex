@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Center,
@@ -7,7 +7,6 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { Pokeball } from 'tabler-icons-react';
 
 import { withHeader } from '../hocs';
@@ -34,21 +33,16 @@ const Collection = () => {
   const pokemonsLoading = useTypedSelector(getPokemonsLoading);
   const userPokemonsIds = useTypedSelector(getUserPokemonsIds);
 
-  const [searchValue, setSearchValue] = useInputState('');
-  const [debouncedSearchValue] = useDebouncedValue(searchValue, 200);
+  const [searchValue, setSearchValue] = useState('');
 
   const userPokemonsArray = useMemo(() => (
     pokemonsArray.filter((pokemon) => userPokemonsIds.includes(pokemon.id))
   ), [pokemonsArray, userPokemonsIds]);
 
-  const filteredUserPokemonsArray = useFilter(
-    userPokemonsArray,
-    debouncedSearchValue,
-    {
-      keys: ['formattedId', 'name'],
-      threshold: 0.2,
-    },
-  );
+  const filteredUserPokemonsArray = useFilter(userPokemonsArray, searchValue, {
+    keys: ['formattedId', 'name'],
+    threshold: 0.2,
+  });
 
   const getPokemonsByIds = () => {
     dispatch<GetPokemonsByIdsRequestedAction>({
@@ -61,11 +55,10 @@ const Collection = () => {
   }, []);
 
   return (
-    <Box className={classes.wrapper}>
+    <Box>
       <PageHeading
         title="Sua Coleção"
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
+        setValue={setSearchValue}
       />
       <Container size="xl">
         <SimpleGrid
@@ -96,7 +89,7 @@ const Collection = () => {
           pokemonsLoading
           || (userPokemonsIds.length > 0 && pokemonsArray.length === 0)
         ) && (
-          <Center py="xs">
+          <Center py="sm">
             <Pokeball
               className={cx(classes.pokeball, {
                 [classes.pokeballLoading]: pokemonsLoading

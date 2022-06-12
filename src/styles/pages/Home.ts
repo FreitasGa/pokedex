@@ -25,8 +25,6 @@ const pokeballLoader = keyframes`
 `;
 
 export const useHomeStyles = createStyles(() => ({
-  wrapper: {
-  },
   pokeball: {
     animation: `${pokeball} 2s cubic-bezier(0.55, 0.06, 0.68, 0.19) infinite`,
   },
