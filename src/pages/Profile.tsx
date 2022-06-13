@@ -23,7 +23,7 @@ import {
   PokemonsActionTypes,
 } from '../actionTypes';
 
-const Collection = () => {
+const Profile = () => {
   const dispatch = useTypedDispatch();
 
   const theme = useMantineTheme();
@@ -105,4 +105,4 @@ const Collection = () => {
   );
 };
 
-export const CollectionPage = withHeader(Collection);
+export const ProfilePage = withHeader(Profile);

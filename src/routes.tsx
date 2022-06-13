@@ -1,13 +1,47 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  unstable_HistoryRouter as HistoryRouter,
+  Routes,
+  Route,
+} from 'react-router-dom';
+import { PrivateRoute, RedirectRoute } from './components';
+import { history } from './config';
 
-import { CollectionPage, HomePage } from './pages';
+import {
+  ProfilePage,
+  HomePage,
+  LoginPage,
+  RegisterPage,
+} from './pages';
 
 export const AppRoutes = () => (
-  <BrowserRouter>
+  <HistoryRouter history={history}>
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/collection" element={<CollectionPage />} />
+      <Route
+        path="/profile"
+        element={(
+          <PrivateRoute>
+            <ProfilePage />
+          </PrivateRoute>
+        )}
+      />
+      <Route
+        path="/login"
+        element={(
+          <RedirectRoute>
+            <LoginPage />
+          </RedirectRoute>
+        )}
+      />
+      <Route
+        path="/register"
+        element={(
+          <RedirectRoute>
+            <RegisterPage />
+          </RedirectRoute>
+        )}
+      />
     </Routes>
-  </BrowserRouter>
+  </HistoryRouter>
 );

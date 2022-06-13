@@ -31,6 +31,17 @@
       }
     }
   },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ],
   "rules": {
     "import/prefer-default-export": "off",
     "import/extensions": "off",

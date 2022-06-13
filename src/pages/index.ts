@@ -1,2 +1,4 @@
 export * from './Home';
-export * from './Collection';
+export * from './Profile';
+export * from './Login';
+export * from './Register';

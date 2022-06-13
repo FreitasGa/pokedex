@@ -5,17 +5,29 @@ import { UserAction, UserActionTypes } from '../actionTypes';
 
 interface State {
   pokemonsIds: number[];
+  currentUser: {
+    name: string;
+    email: string;
+  } | null;
   loading: boolean;
 }
 
 const initialState: State = {
   pokemonsIds: [],
+  currentUser: null,
   loading: false,
 };
 
 const addNewUserPokemons = (state: State, newUserPokemons: string) => {
   const pokemonsIds: number[] = JSON.parse(newUserPokemons);
   state.pokemonsIds = pokemonsIds;
+};
+
+const addUser = (state: State, user: any) => {
+  state.currentUser = {
+    email: user.attributes.email,
+    name: user.attributes.name,
+  };
 };
 
 export const userReducer = produce(
@@ -44,6 +56,58 @@ export const userReducer = produce(
 
       case UserActionTypes.TOGGLE_USER_POKEMON_SUCCEEDED:
         addNewUserPokemons(state, action.payload.newUserPokemons);
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.LOGIN_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.LOGIN_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.LOGIN_SUCCEEDED:
+        addUser(state, action.payload.user);
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.LOGOUT_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.LOGOUT_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.LOGOUT_SUCCEEDED:
+        state.currentUser = null;
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.REGISTER_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.REGISTER_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.REGISTER_SUCCEEDED:
+        state.currentUser = action.payload.user;
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.GET_CURRENT_SESSION_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.GET_CURRENT_SESSION_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.GET_CURRENT_SESSION_SUCCEEDED:
+        addUser(state, action.payload.user);
         state.loading = false;
         return state;
 
