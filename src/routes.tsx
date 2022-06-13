@@ -12,6 +12,7 @@ import {
   HomePage,
   LoginPage,
   RegisterPage,
+  ForgotPasswordPage,
 } from './pages';
 
 export const AppRoutes = () => (
@@ -39,6 +40,14 @@ export const AppRoutes = () => (
         element={(
           <RedirectRoute>
             <RegisterPage />
+          </RedirectRoute>
+        )}
+      />
+      <Route
+        path="/forgot-password"
+        element={(
+          <RedirectRoute>
+            <ForgotPasswordPage />
           </RedirectRoute>
         )}
       />

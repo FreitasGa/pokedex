@@ -8,7 +8,11 @@ import {
   login,
   logout,
   register,
+  confirmRegister,
+  resendConfirmation,
   getCurrentSession,
+  forgotPassword,
+  confirmForgotPassword,
 } from './userSaga';
 
 export function* rootSaga() {
@@ -22,6 +26,10 @@ export function* rootSaga() {
     fork(login),
     fork(logout),
     fork(register),
+    fork(confirmRegister),
+    fork(resendConfirmation),
     fork(getCurrentSession),
+    fork(forgotPassword),
+    fork(confirmForgotPassword),
   ]);
 }

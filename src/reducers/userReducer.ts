@@ -94,7 +94,30 @@ export const userReducer = produce(
         return state;
 
       case UserActionTypes.REGISTER_SUCCEEDED:
-        state.currentUser = action.payload.user;
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.CONFIRM_REGISTER_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.CONFIRM_REGISTER_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.CONFIRM_REGISTER_SUCCEEDED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.RESEND_CONFIRMATION_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.RESEND_CONFIRMATION_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.RESEND_CONFIRMATION_SUCCEEDED:
         state.loading = false;
         return state;
 
@@ -108,6 +131,30 @@ export const userReducer = produce(
 
       case UserActionTypes.GET_CURRENT_SESSION_SUCCEEDED:
         addUser(state, action.payload.user);
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.FORGOT_PASSWORD_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.FORGOT_PASSWORD_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.FORGOT_PASSWORD_SUCCEEDED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.CONFIRM_FORGOT_PASSWORD_REQUESTED:
+        state.loading = true;
+        return state;
+
+      case UserActionTypes.CONFIRM_FORGOT_PASSWORD_FAILED:
+        state.loading = false;
+        return state;
+
+      case UserActionTypes.CONFIRM_FORGOT_PASSWORD_SUCCEEDED:
         state.loading = false;
         return state;
 

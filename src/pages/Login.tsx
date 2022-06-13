@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Anchor,
   Box,
@@ -16,14 +16,29 @@ import * as Yup from 'yup';
 import { useLoginStyles } from '../styles/pages';
 import { withHeader } from '../hocs';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
-import { getUserLoading } from '../selectors';
-import { LoginRequestedAction, UserActionTypes } from '../actionTypes';
+import {
+  getLoginError,
+  getLoginLoading,
+  getLoginNeedsConfirmation,
+} from '../selectors';
+import {
+  ConfirmRegisterRequestedAction,
+  LoginRequestedAction,
+  ResetConfirmation,
+  UserActionTypes,
+} from '../actionTypes';
 
-const schema = Yup.object().shape({
+const loginSchema = Yup.object().shape({
   email: Yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
   password: Yup.string()
     .min(8, 'Senha deve ter no mínimo 8 caracteres')
     .required('Senha é obrigatória'),
+});
+
+const emailConfirmationSchema = Yup.object().shape({
+  code: Yup.string()
+    .min(6, 'Código deve ter no mínimo 6 caracteres')
+    .required('Código é obrigatório'),
 });
 
 const Login = () => {
@@ -31,13 +46,22 @@ const Login = () => {
 
   const { classes } = useLoginStyles();
 
-  const isLoading = useTypedSelector(getUserLoading);
+  const loading = useTypedSelector(getLoginLoading);
+  const error = useTypedSelector(getLoginError);
+  const needsConfirmation = useTypedSelector(getLoginNeedsConfirmation);
 
   const loginForm = useForm({
-    schema: yupResolver(schema),
+    schema: yupResolver(loginSchema),
     initialValues: {
       email: '',
       password: '',
+    },
+  });
+
+  const emailConfirmationForm = useForm({
+    schema: yupResolver(emailConfirmationSchema),
+    initialValues: {
+      code: '',
     },
   });
 
@@ -53,38 +77,93 @@ const Login = () => {
     });
   };
 
+  const handleEmailConfirmation = () => {
+    const { email, password } = loginForm.values;
+    const { code } = emailConfirmationForm.values;
+
+    dispatch<ConfirmRegisterRequestedAction>({
+      type: UserActionTypes.CONFIRM_REGISTER_REQUESTED,
+      payload: {
+        email,
+        password,
+        code,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (error) {
+      if (!needsConfirmation) {
+        loginForm.setErrors({
+          email: 'E-mail ou senha inválidos',
+          password: 'E-mail ou senha inválidos',
+        });
+      } else {
+        emailConfirmationForm.setErrors({
+          code: 'Código inválido',
+        });
+      }
+    }
+
+    return () => {
+      dispatch<ResetConfirmation>({
+        type: UserActionTypes.RESET_CONFIRMATION,
+      });
+    };
+  }, [error]);
+
   return (
     <Container className={classes.wrapper}>
       <Box className={classes.box}>
         <Title className={classes.title} order={3}>
-          Entre com sua conta
+          {!needsConfirmation ? 'Entre com sua conta' : 'Confirme seu e-mail'}
         </Title>
         <form
           className={classes.form}
-          onSubmit={loginForm.onSubmit(handleSubmit)}
+          onSubmit={
+            !needsConfirmation
+              ? loginForm.onSubmit(handleSubmit)
+              : emailConfirmationForm.onSubmit(handleEmailConfirmation)
+          }
         >
-          <TextInput
-            required
-            label="Seu e-mail"
-            placeholder="Digite seu e-mail"
-            {...loginForm.getInputProps('email')}
-          />
-          <PasswordInput
-            required
-            label="Sua senha"
-            placeholder="Digite sua senha"
-            {...loginForm.getInputProps('password')}
-          />
-          <Anchor
-            component={Link}
-            to="/forgot-password"
-            align="right"
-            size="sm"
-          >
-            Esqueceu sua senha?
-          </Anchor>
-          <Button fullWidth size="lg" type="submit" loading={isLoading}>
-            Entrar
+          {!needsConfirmation ? (
+            <>
+              <TextInput
+                required
+                label="Seu e-mail"
+                placeholder="Digite seu e-mail"
+                {...loginForm.getInputProps('email')}
+              />
+              <PasswordInput
+                required
+                label="Sua senha"
+                placeholder="Digite sua senha"
+                {...loginForm.getInputProps('password')}
+              />
+              <Anchor
+                component={Link}
+                to={{
+                  pathname: '/forgot-password',
+                  search: `?email=${encodeURIComponent(
+                    loginForm.values.email,
+                  )}`,
+                }}
+                align="right"
+                size="sm"
+              >
+                Esqueceu sua senha?
+              </Anchor>
+            </>
+          ) : (
+            <TextInput
+              required
+              label="Código"
+              placeholder="Digite o código de confirmação"
+              {...emailConfirmationForm.getInputProps('code')}
+            />
+          )}
+          <Button fullWidth size="lg" type="submit" loading={loading}>
+            {!needsConfirmation ? 'Entrar na conta' : 'Confirmar e-mail'}
           </Button>
         </form>
         <Anchor component={Link} to="/register" align="center" size="sm">

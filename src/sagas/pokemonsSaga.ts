@@ -77,10 +77,6 @@ function* runGetPokemons() {
   }
 }
 
-export function* getPokemons() {
-  yield takeEvery(PokemonsActionTypes.GET_POKEMONS_REQUESTED, runGetPokemons);
-}
-
 function* runGetPokemon(action: GetPokemonRequestedAction) {
   const {
     payload: { query },
@@ -105,10 +101,6 @@ function* runGetPokemon(action: GetPokemonRequestedAction) {
   }
 }
 
-export function* getPokemon() {
-  yield takeEvery(PokemonsActionTypes.GET_POKEMON_REQUESTED, runGetPokemon);
-}
-
 function* runGetPokemonsByIds() {
   try {
     const ids: number[] = yield select((state: RootState) => state.user.pokemonsIds);
@@ -128,6 +120,14 @@ function* runGetPokemonsByIds() {
       },
     });
   }
+}
+
+export function* getPokemons() {
+  yield takeEvery(PokemonsActionTypes.GET_POKEMONS_REQUESTED, runGetPokemons);
+}
+
+export function* getPokemon() {
+  yield takeEvery(PokemonsActionTypes.GET_POKEMON_REQUESTED, runGetPokemon);
 }
 
 export function* getPokemonsByIds() {

@@ -19,7 +19,7 @@ export interface GetPokemonsRequestedAction {
 export interface GetPokemonsFailedAction {
   type: PokemonsActionTypes.GET_POKEMONS_FAILED;
   payload: {
-    error: unknown;
+    error: any;
   };
 }
 
@@ -41,7 +41,7 @@ export interface GetPokemonRequestedAction {
 export interface GetPokemonFailedAction {
   type: PokemonsActionTypes.GET_POKEMON_FAILED;
   payload: {
-    error: unknown;
+    error: any;
   };
 }
 
@@ -59,7 +59,7 @@ export interface GetPokemonsByIdsRequestedAction {
 export interface GetPokemonsByIdsFailedAction {
   type: PokemonsActionTypes.GET_POKEMONS_BY_IDS_FAILED;
   payload: {
-    error: unknown;
+    error: any;
   };
 }
 

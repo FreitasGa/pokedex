@@ -16,7 +16,7 @@ export interface GetMovesRequestedAction {
 export interface GetMovesFailedAction {
   type: MovesActionTypes.GET_MOVES_FAILED;
   payload: {
-    error: unknown;
+    error: any;
   };
 }
 
