@@ -1,16 +1,12 @@
 import { createStyles } from '@mantine/core';
 
-export const useForgotPasswordStyles = createStyles((theme) => ({
+export const useForgotPasswordStyles = createStyles(() => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     height: 'calc(100vh - 61px)',
-
-    [theme.fn.smallerThan('xs')]: {
-      height: 'calc(100vh - 100px)',
-    },
   },
   box: {
     display: 'flex',

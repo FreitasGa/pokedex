@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import {
+  Anchor,
   Button,
   Container,
   Group,
@@ -13,10 +14,6 @@ import { useTypedDispatch, useTypedSelector } from '../hooks';
 import { getCurrentUser, getUserLoading } from '../selectors';
 import { LogoutRequestedAction, UserActionTypes } from '../actionTypes';
 
-const defaultLinks = [
-  { name: 'Inicio', pathname: '/' },
-];
-
 const notLoggedInLinks = [
   { name: 'Entrar', pathname: '/login' },
   { name: 'Cadastro', pathname: '/register' },
@@ -28,24 +25,17 @@ const loggedInLinks = [
 
 export const Header = () => {
   const dispatch = useTypedDispatch();
-  const location = useLocation();
 
   const { classes } = useHeaderStyles();
-
-  const [activeLink, setActiveLink] = useState<string>(location.pathname);
 
   const currentUser = useTypedSelector(getCurrentUser);
   const isLoading = useTypedSelector(getUserLoading);
 
   const links = useMemo(() => {
-    if (!currentUser) {
-      return [...defaultLinks, ...notLoggedInLinks];
-    }
     if (currentUser) {
-      return [...defaultLinks, ...loggedInLinks];
+      return loggedInLinks;
     }
-
-    return defaultLinks;
+    return notLoggedInLinks;
   }, [currentUser]);
 
   const handleLogOut = () => {
@@ -57,7 +47,9 @@ export const Header = () => {
   return (
     <HeaderWrapper className={classes.wrapper} height="fit-content">
       <Container className={classes.header} size="xl">
-        <Title order={2}>Pokédex</Title>
+        <Anchor component={Link} to="/" underline={false}>
+          <Title order={2}>Pokédex</Title>
+        </Anchor>
         <Group spacing={5}>
           {links.map((link) => (
             <Button
@@ -65,8 +57,7 @@ export const Header = () => {
               key={link.name}
               component={Link}
               to={link.pathname}
-              onClick={() => setActiveLink(link.pathname)}
-              variant={activeLink === link.pathname ? 'filled' : 'subtle'}
+              variant="subtle"
             >
               {link.name}
             </Button>

@@ -14,10 +14,7 @@ export const useHeaderStyles = createStyles((theme) => ({
     height: '60px',
 
     [theme.fn.smallerThan('xs')]: {
-      flexDirection: 'column',
-      justifyContent: 'center',
       gap: '0.5rem',
-      height: '100px',
     },
   },
   link: {
