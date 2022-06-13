@@ -17,7 +17,7 @@ import { backgroundColorByType, capitalize, colorByType } from './utils';
 import { usePokemonCardStyles } from '../styles/components';
 import pokeballBackground from '../assets/pokeballBackground.png';
 import { useTypedDispatch, useTypedSelector } from '../hooks';
-import { getIsPokemonSelected } from '../selectors';
+import { getCurrentUser, getIsPokemonSelected } from '../selectors';
 import {
   ToggleUserPokemonRequestedAction,
   UserActionTypes,
@@ -34,6 +34,8 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
 
   const modals = useModals();
   const { classes } = usePokemonCardStyles();
+
+  const currentUser = useTypedSelector(getCurrentUser);
 
   const isSelected = useTypedSelector((state) => getIsPokemonSelected(state, pokemon.id));
 
@@ -69,6 +71,9 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
+
+    if (!currentUser) return;
+
     dispatch<ToggleUserPokemonRequestedAction>({
       type: UserActionTypes.TOGGLE_USER_POKEMON_REQUESTED,
       payload: { pokemonId: pokemon.id },
@@ -97,20 +102,22 @@ export const PokemonCard = (props: PokemonPreviewProps) => {
             height={200}
           />
         </Box>
-        <Box className={classes.actionWrapper}>
-          <ActionIcon
-            onClick={handleSelectClick}
-            size={38}
-            variant="transparent"
-          >
-            <Pokeball
-              className={classes.actionIcon}
+        {currentUser && (
+          <Box className={classes.actionWrapper}>
+            <ActionIcon
+              onClick={handleSelectClick}
               size={38}
-              color={isSelected ? '#fff' : '#A0A0A0'}
-              fill={isSelected ? '#A0A0A0' : 'transparent'}
-            />
-          </ActionIcon>
-        </Box>
+              variant="transparent"
+            >
+              <Pokeball
+                className={classes.actionIcon}
+                size={38}
+                color={isSelected ? '#fff' : '#A0A0A0'}
+                fill={isSelected ? '#A0A0A0' : 'transparent'}
+              />
+            </ActionIcon>
+          </Box>
+        )}
       </Box>
       <Box className={classes.infoWrapper} p="md">
         <Text className={classes.pokemonId}>{`#${pokemon.formattedId}`}</Text>
