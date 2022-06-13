@@ -90,7 +90,6 @@ const Home = () => {
                 [classes.pokeballLoading]: pokemonsLoading,
               })}
               size={30}
-              color="#A0A0A0"
             />
           </Center>
         </Waypoint>

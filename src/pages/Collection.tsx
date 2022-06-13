@@ -96,7 +96,6 @@ const Collection = () => {
                 || (userPokemonsIds.length > 0 && pokemonsArray.length === 0),
               })}
               size={30}
-              color="#A0A0A0"
             />
           </Center>
         )}

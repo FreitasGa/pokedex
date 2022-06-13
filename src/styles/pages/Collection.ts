@@ -11,11 +11,10 @@ const pokeballLoader = keyframes`
 
 export const useCollectionStyles = createStyles(() => ({
   pokeball: {
-    color: 'transparent',
-    fill: 'transparent',
     stroke: 'transparent',
   },
   pokeballLoading: {
     animation: `${pokeballLoader} 1s linear infinite`,
+    stroke: '#A0A0A0',
   },
 }));
