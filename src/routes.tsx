@@ -8,7 +8,7 @@ import { PrivateRoute, RedirectRoute } from './components';
 import { history } from './config';
 
 import {
-  ProfilePage,
+  CollectionPage,
   HomePage,
   LoginPage,
   RegisterPage,
@@ -20,10 +20,10 @@ export const AppRoutes = () => (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route
-        path="/profile"
+        path="/collection"
         element={(
           <PrivateRoute>
-            <ProfilePage />
+            <CollectionPage />
           </PrivateRoute>
         )}
       />

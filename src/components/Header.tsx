@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Anchor,
   Button,
@@ -20,11 +20,12 @@ const notLoggedInLinks = [
 ];
 
 const loggedInLinks = [
-  { name: 'Perfil', pathname: '/profile' },
+  { name: 'Coleção', pathname: '/collection' },
 ];
 
 export const Header = () => {
   const dispatch = useTypedDispatch();
+  const location = useLocation();
 
   const { classes } = useHeaderStyles();
 
@@ -32,11 +33,22 @@ export const Header = () => {
   const isLoading = useTypedSelector(getUserLoading);
 
   const links = useMemo(() => {
+    let toReturn;
+
     if (currentUser) {
-      return loggedInLinks;
+      toReturn = [...loggedInLinks];
+    } else {
+      toReturn = [...notLoggedInLinks];
     }
-    return notLoggedInLinks;
-  }, [currentUser]);
+
+    if (location.pathname !== '/') {
+      const activeLink = toReturn.findIndex((link) => link.pathname === location.pathname);
+      toReturn.splice(activeLink, 1);
+      toReturn = [{ name: 'Home', pathname: '/' }, ...toReturn];
+    }
+
+    return toReturn;
+  }, [currentUser, location.pathname]);
 
   const handleLogOut = () => {
     dispatch<LogoutRequestedAction>({
